@@ -1,0 +1,110 @@
+.filters {
+   display: flex;
+   gap: 10px;
+   margin-bottom: 20px;
+   flex-wrap: wrap;
+   padding-top: 1rem;
+   align-items: center;
+}
+
+.filters p {
+   font-weight: 500;
+   font-size: 14px;
+}
+
+.filters input,
+.filters select {
+   padding: 8px 12px;
+   border-radius: 6px;
+   border: 1px solid #ccc;
+   outline: none;
+}
+
+.home_header_container {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 1rem;
+   padding: 1rem 0 1rem 0;
+   /* width: 80%; */
+}
+
+.home_numberOfMerchants {
+   border: 1px solid rgba(38, 38, 38, 0.1);
+   box-shadow: 5px 5px 5px rgba(38, 38, 38, 0.4);
+   border-radius: 10px;
+   padding: 10px;
+   flex: 1 1 calc(25% - 2.5rem);
+   max-width: calc(25% - 2.5rem);
+   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.home_numberOfMerchants:hover {
+   transform: scale(1.05) translateY(-3px);
+   box-shadow: 5px 5px 10px rgba(38, 38, 38, 0.8);
+}
+
+.home_numberOfMerchants h2 {
+   font-size: 16px;
+   font-weight: 500;
+   color: #646464;
+   text-align: center;
+   border-bottom: 1.5px solid rgba(38, 38, 38, 0.3);
+   /* padding-bottom: 5px; */
+   margin-bottom: 10px;
+}
+
+.home_numberOfMerchants h4 {
+   font-size: 18px;
+   font-weight: 500;
+   color: #424141;
+}
+
+.agent_details_parent {
+   /* justify-self: center; */
+   /* padding: 0 1rem; */
+   cursor: pointer;
+}
+.card_not_clickable {
+   cursor: unset !important;
+}
+
+.agent_details {
+   display: flex;
+   justify-content: space-between;
+   gap: 1rem;
+   margin: 5px;
+   cursor: pointer;
+}
+.agent_details:hover {
+   text-decoration: underline;
+}
+.agent_details_parent table tbody tr:hover {
+   text-decoration: underline;
+}
+.agent_details_row {
+   width: 100%;
+   display: contents;
+}
+.metal_trns_type {
+   width: 60px;
+   border: 1px solid #ccc;
+}
+
+.agent_details_parent span {
+   font-size: 14px;
+   color: #424141;
+}
+/* --------------------------- */
+.cards_and_news {
+   display: flex;
+}
+.trends_and_news {
+   /* width: 20%; */
+}
+.agent_details_parent table {
+   width: 100%;
+}
+
+.agent_details_parent table tr td:last-child{
+   text-align: end;
+}

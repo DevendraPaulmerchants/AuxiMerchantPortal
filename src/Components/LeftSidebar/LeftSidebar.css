@@ -1,0 +1,4 @@
+.active {
+    /* background:rgba(77, 67, 50, 0.6) !important; */
+   background: linear-gradient(to right, rgba(255, 215, 0, 0.9), rgba(38, 38, 38, 0.2)) !important;
+}

@@ -1,0 +1,132 @@
+.merchants_parent {
+    width: 100%;
+    padding-right: 2rem;
+}
+
+.merchants_parent_subheader {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+    gap: 1rem;
+    /* width: 90%; */
+}
+
+.search_input_field {
+    display: flex;
+    align-items: center;
+    /* border: 1px solid #928407; */
+    border:1px solid rgba(38, 38, 38, 0.3);
+    width: fit-content;
+    height: fit-content;
+    padding: 5px 10px;
+    border-radius: 5px;
+    gap: 10px;
+}
+
+.add_merchants_and_filter {
+    display: flex;
+    gap: 10px;
+}
+
+.add_merchants_and_filter button {
+    padding: 5px 10px;
+    cursor: pointer;
+    width: 165px;
+    font-weight: 500;
+}
+
+.search_input_field input {
+    border: none;
+    outline: none;
+}
+
+.merchants_list_container {
+    text-align: center;
+    border-spacing: 0;
+    width: 100%;
+    box-shadow: 5px 5px 5px rgba(38, 38, 38, 0.5);
+}
+
+.merchants_list_container th {
+    background: rgba(38, 38, 38, 0.5);
+    padding: 5px;
+    font-weight: 500;
+    font-size: 14px;
+    color: #f2f1e9;
+}
+
+.merchants_list_container tbody tr td {
+    border-bottom: 1.5px solid rgba(38, 38, 38, 0.3);
+    color: rgba(38, 38, 38, 0.9);
+    padding: 5px;
+    font-size: 12px;
+}
+
+.merchants_list_container tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.pagination_parent {
+    margin: 2rem 0;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    gap: 10px;
+}
+
+.pagination_parent button {
+    font-size: 20px;
+    font-weight: 600;
+    border: none;
+    outline: none;
+    background: none;
+    cursor: pointer;
+}
+
+.pagination_parent_pageno {
+    border: 1px solid #928407;
+    border-radius: 50%;
+    padding: 1px 10px;
+}
+
+.user_menu_list li {
+    list-style: none;
+    cursor: pointer;
+    /* border: 1px solid red; */
+    margin: 4px 0;
+}
+.loader_container {
+    width: 100%;
+    height: fit-content;
+    padding-top: 2rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
+
+.loader_item {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: loading 1s linear infinite;
+}
+
+.loader_item img {
+    height: 100%;
+    width: 100%;
+    object-fit: fill;
+    animation: loading 0.5s linear infinite;
+    display: none;
+}
+@keyframes loading {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

@@ -1,0 +1,59 @@
+.transaction_type_input select {
+    outline: none;
+    padding: 2px 5px;
+    border: 1px solid rgba(38, 38, 38, 0.3);
+    border-radius: 5px;
+}
+.date_picker_input {
+    outline: none;
+    padding: 2px 5px;
+    border: 1px solid rgba(38, 38, 38, 0.3);
+    border-radius: 5px;
+}
+.from_and_to_date {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+.metal_filter_btn button{
+    background: linear-gradient(to right, rgba(38, 38, 38, 0.4), rgba(38, 38, 38, 0.2));
+    color: #1f1e19;
+    outline: none;
+    border-radius: 5px;
+    border: none;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 2px 20px;
+    width: 100%;
+    cursor: pointer;
+}
+.customer_detail_container {
+  box-shadow: 0 0 15px rgba(38, 38, 38, 0.3);
+  border-radius: 10px;
+  margin-bottom: 15px;
+  padding: 5px 10px;
+  /* background-color:#3c7388; */
+}
+/* .customer_detail_container:nth-child(odd){
+} */
+
+.customer_detail_container h2 {
+  color: rgba(38, 38, 38, 0.6);
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+.customer_detail_row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.customer_detail_container h4 {
+    color: rgba(38, 38, 38, 0.9);
+    font-size: 16px;
+    font-weight: 500;
+    width: unset;
+  }
+.customer_detail_container p {
+    color: rgba(38, 38, 38, 0.8);
+  }

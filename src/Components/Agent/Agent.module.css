@@ -1,0 +1,133 @@
+.back_arrow {
+    cursor: pointer;
+}
+
+.agent_document_image {
+    height: 400px;
+    width: 500px;
+    justify-self: center;
+}
+
+.agent_document_image img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+
+.preview_image_container {
+    margin-top: 10px;
+}
+
+.preview_image_container img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+
+.row_actions {
+    position: absolute;
+    z-index: 9;
+    right: 1rem;
+    border-radius: 5px;
+    padding: 5px;
+    width: 120px;
+    background: #fff;
+    border: 1px solid rgba(38, 38, 38, 0.2);
+    box-shadow: 5px 5px 5px rgba(38, 38, 38, 0.5);
+}
+
+.row_actions li {
+    text-decoration: underline;
+}
+
+.merchants_select {
+    outline: none;
+    padding: 2px 5px;
+    border: 1px solid rgba(38, 38, 38, 0.3);
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.start_date_and_end_date {
+    display: flex;
+    gap: 20px;
+}
+
+.date_input {
+    outline: none;
+    border: 1px solid rgba(38, 38, 38, 0.3);
+    padding: 5px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+/* ---------------- File view ------------- */
+.file_mini_view {
+    width: 100%;
+    height: 100px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid rgba(38, 38, 38, 0.5);
+    overflow: hidden;
+    position: relative;
+}
+
+.max_view {
+    position: absolute;
+    bottom: 0px;
+    right: 10px;
+    color: #000;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.mini_file {
+    height: 100px;
+}
+
+.preview_uploaded_file {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(38, 38, 38, 0.3);
+}
+
+.open_file_dimension {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    max-height: 90%;
+    max-width: 60%;
+    transform: translate(-50%, -50%);
+    background: #FFF;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.open_file_dimension {
+    width: 60%;
+    height: 100%;
+    position: relative;
+}
+
+.pdf_close_icon {
+    display: flex;
+    justify-content: flex-end;
+    cursor: pointer;
+    padding-bottom: 1rem;
+    font-size: 20px;
+}
+
+.preview_pdf_file {
+    width: 100%;
+    height: 100%;
+}
+
+.open_file {
+    width: 100%;
+    height: 100%;
+    border: none;
+}

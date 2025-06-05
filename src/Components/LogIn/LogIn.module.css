@@ -1,0 +1,131 @@
+.login_parent {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(38,38,38,0.5);
+    z-index: 9;
+}
+.login_container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 30%;
+    transform: translate(-50%,-50%);
+    background: #FFF;
+    box-shadow: 5px 5px 5px rgb(38, 38, 38, 0.5);
+    border: 1px solid rgba(38,38,38,0.5);
+    padding: 2rem;
+    border-radius: 10px;
+}
+.login_header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.login_header h2 {
+    color: #646464;
+    /* color: rgba(255,215,0,1); */
+    font-weight: 500;
+}
+.login_header_close {
+    cursor: pointer;
+}
+.login_header select {
+    /* border: 1px solid #646464; */
+    border: 1px solid rgba(205, 133, 63, 1);
+    outline: none;
+    border-radius: 5px;
+    padding: 5px 0 5px 10px;
+    font-weight: 600;
+    width: fit-content;
+    color: #646464;
+    cursor: pointer;
+}
+.label_and_input_field {
+    margin-bottom: 10px;
+}
+.label_and_input_field label {
+    display: block;
+    margin-bottom: 5px;
+    /* color: #646464; */
+    /* color: rgba(255,140,0,1); */
+    color: rgba(38, 38, 38, 0.9);
+}
+.label_and_input_field input {
+    /* border: 1px solid #646464; */
+    /* border: 1px solid rgba(205,133,63,1); */
+    border: 1px solid rgba(38, 38, 38, 0.5);
+    outline: none;
+    border-radius: 5px;
+    padding: 5px 0 5px 10px;
+    width: 98%;
+    color: #1f1e19;
+}
+.login_password_and_icon {
+    display: flex;
+    /* border: 1px solid #646464; */
+    /* border: 1px solid rgba(205,133,63,1); */
+    border: 1px solid rgba(38, 38, 38, 0.5);
+    border-radius: 5px;
+    align-items: center;
+    justify-items: center;
+    padding-right: 10px;
+}
+.login_password_and_icon input {
+    border: none;
+}
+.login_password_and_icon span {
+    cursor: pointer;
+    /* color: rgba(255,140,0,1); */
+    color: rgba(38, 38, 38, 0.8);
+}
+.signup_button {
+    text-align: center;
+}
+.signup_button button{
+    /* background: #1D3071; */
+    background: rgb(255,215,0);
+    color: rgb(139,69,19);
+    outline: none;
+    border-radius: 5px;
+    border: none;
+    /* color: #fff; */
+    font-weight: 600;
+    font-size: 18px;
+    padding: 5px 20px;
+    width: 100%;
+    cursor: pointer;
+}
+.signup_secondary_btn {
+    text-align: center;
+    padding: 1rem 0;
+}
+.signup_secondary_btn p {
+    color: 	rgb(160,82,45);
+}
+.signup_secondary_btn span {
+    text-decoration: underline;
+    /* color: #1D3071; */
+    color: rgb(139,69,19);;
+    cursor: pointer;
+    font-weight: 600;
+}
+.welcome_massage_h2 {
+    text-align: center;
+    color: #646464;
+}
+.welcome_massage_h2:last-child {
+    cursor: pointer;
+}
+
+.page_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.invalid_password {
+    color: red;
+}

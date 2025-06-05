@@ -1,0 +1,257 @@
+.add_merchants_parent {
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(38, 38, 38, 0.5);
+}
+
+.add_merchants_form_container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 10px 1rem;
+    border-radius: 5px;
+    width: 50%;
+    max-height: 90%;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    /* For Firefox */
+}
+
+.add_merchants_form_container::-webkit-scrollbar {
+    display: none;
+    /* For Chrome, Safari, Edge */
+}
+
+.add_merchants_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    padding: 0.5rem 0 1rem;
+}
+
+.add_merchants_header h2 {
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.add_merchants_header h3 {
+    cursor: pointer;
+    display: flex;
+}
+
+.name_email_parent_container {
+    display: flex;
+    gap: 4rem;
+    justify-content: space-between;
+    padding-bottom: 8px;
+}
+
+.name_label_input_contaner {
+    /* padding-right: 1rem; */
+    width: 100%;
+}
+
+.name_label_input_contaner label {
+    display: block;
+    /* color: rgba(255, 140, 0, 1); */
+    color: rgba(38, 38, 38, 0.9);
+    margin-bottom: 5px;
+}
+
+.name_label_input_contaner input {
+    /* border: 1px solid rgba(205, 133, 63, 1); */
+    border: 1px solid rgba(38, 38, 38, 0.4);
+    outline: none;
+    border-radius: 5px;
+    padding: 5px 5px 5px 10px;
+    width: 95%;
+    /* color: #646464; */
+    color: #1f1e19;
+}
+
+.name_label_input_contaner select {
+    /* border: 1px solid rgba(205, 133, 63, 1); */
+    border: 1px solid rgba(38, 38, 38, 0.4);
+    outline: none;
+    border-radius: 5px;
+    padding: 5px 5px 5px 10px;
+    width: 100%;
+    color: #646464;
+    margin-bottom: 10px;
+}
+
+.name_label_input_contaner textarea {
+    /* border: 1px solid rgba(205, 133, 63, 1); */
+    border: 1px solid rgba(38, 38, 38, 0.4);
+    outline: none;
+    border-radius: 5px;
+    padding: 5px 5px 5px 10px;
+    width: 100%;
+    max-height: 50px;
+    color: #646464;
+}
+
+.not_valid_text {
+    color: red;
+}
+
+.add_merchants_bussiness_address h3 {
+    font-weight: 500;
+    font-size: 20px;
+    color: rgba(139, 69, 19, 1);
+    margin-top: 10px;
+}
+
+.add_merchats_btn_container {
+    padding-top: 1.5rem;
+    display: flex;
+    gap: 2rem;
+}
+
+.primary_login_btn {
+    background: linear-gradient(to right, rgba(255, 215, 0, 0.9), rgba(38, 38, 38, 0.2));
+    color: #1f1e19;
+    outline: none;
+    border-radius: 5px;
+    border: none;
+    font-weight: 600;
+    font-size: 18px;
+    padding: 5px 20px;
+    width: 100%;
+    height: fit-content;
+    cursor: pointer;
+}
+
+.merchant_details_page_table {
+    width: 100%;
+}
+
+.merchant_details_page_row td {
+    padding-bottom: 1rem;
+}
+
+.merchant_name {
+    font-weight: 500;
+    width: 200px;
+}
+
+.merchant_name span {
+    font-weight: 400;
+    color: #646464;
+    font-size: 14px;
+    display: block;
+}
+
+.loader_container {
+    width: 100%;
+    height: fit-content;
+    padding-top: 2rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
+
+.loader_item {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: loading 1s linear infinite;
+}
+
+.loader_item img {
+    height: 100%;
+    width: 100%;
+    object-fit: fill;
+    animation: loading 0.5s linear infinite;
+    display: none;
+}
+@keyframes loading {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.agent_document {
+    display: flex;
+    gap: 2rem;
+}
+
+.agent_document_image {
+    width: 300px;
+    height: 200px;
+    border: 1px solid rgba(38, 38, 38, 0.5);
+    border-radius: 2px;
+    position: relative;
+}
+
+.agent_document_image img {
+    height: 100%;
+    width: 100%;
+    object-fit: fill;
+}
+
+.verify_btn {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.document_kyc_status {
+    position: absolute;
+    font-size: 20px;
+    /* border: 1px solid rgba(38, 38, 38, 0.5); */
+    background: #fff;
+    padding: 0 5px;
+    border-radius: 2px;
+    right: 45px;
+    bottom: 2px;
+}
+
+.pending {
+    color: orange;
+}
+
+.rejected {
+    color: red;
+}
+
+.verified {
+    color: green;
+}
+
+.VERIFIED {
+    border: 3px solid green;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.PENDING {
+    border: 3px solid orange;
+    padding: 5px;
+    border-radius: 5px;
+}
+.REJECTED {
+    border: 3px solid red;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.approve_and_reject_btn_container {
+    display: flex;
+    justify-content: end;
+    gap: 1rem;
+    padding-bottom: 1rem;
+}
