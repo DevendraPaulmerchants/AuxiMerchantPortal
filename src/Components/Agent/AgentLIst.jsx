@@ -1,5 +1,5 @@
-import React, { use, useCallback, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import style from "../Admin/Admin.module.css";
 import style2 from "./Agent.module.css";
 import style1 from "./Merchants.module.css";
@@ -12,16 +12,19 @@ import { APIPath } from '../ApIPath/APIPath';
 import { IoMdEye } from 'react-icons/io';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import InternalAgentList from './internal_agents/InternalAgentList';
+import { dateFormat } from '../../helper';
 
 function AgentList() {
-    const { status } = useParams();
+    const { state } = useLocation();
+
     const { token, merchantId, agentParentList, setAgentParentList, getUserDetails } = useContextData();
 
     const [searchText, setSearchText] = useState("");
     const [agentList, setAgentList] = useState(null);
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('')
-    const [agentwithAccStatus, setAgentWithAccStatus] = useState(status || '');
+    const [agentwithAccStatus, setAgentWithAccStatus] = useState(state || '');
     const [selectedAgent, setSelectedAgent] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
@@ -31,6 +34,12 @@ function AgentList() {
     const [isUpdateClick, setIsUpdateClick] = useState(false);
     // ------------------ Menu click -----------------
     const [isMenuClick, setIsMenuClick] = useState(false);
+    // Check button ------------
+    const [selected, setSelected] = useState('external');
+
+    const handleSelect = (type) => {
+        setSelected(type);
+    };
 
     const closeUpdateForm = () => {
         setIsUpdateClick(false);
@@ -43,7 +52,7 @@ function AgentList() {
             setIsLoading(false);
             return;
         }
-        fetch(`${APIPath}merchant-service/merchant-agent/all/${merchantId}?startDate=${startDate?startDate:''}&endDate=${endDate?endDate:''}`, {
+        fetch(`${APIPath}merchant-service/merchant-agent/all/${merchantId}?startDate=${startDate ? startDate : ''}&endDate=${endDate ? endDate : ''}`, {
             headers: {
                 "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json"
@@ -53,18 +62,7 @@ function AgentList() {
         })
             .then((res) => res.json())
             .then((data) => {
-                // console.log(data);
-                if (agentwithAccStatus === "ACTIVE") {
-                    const active = data.data.filter((data) => data.status === "ACTIVE")
-                    setAgentList(active);
-                }
-                else if (agentwithAccStatus === "INACTIVE") {
-                    const Inactive = data.data.filter(item => item.status === "INACTIVE");
-                    setAgentList(Inactive);
-                }
-                else {
-                    setAgentList(data.data);
-                }
+                setAgentList(data.data);
             })
             .catch((err) => {
                 console.log(err);
@@ -72,7 +70,7 @@ function AgentList() {
             .finally(() => {
                 setIsLoading(false);
             });
-    }, [agentwithAccStatus, startDate, endDate, merchantId,token,agentParentList])
+    }, [startDate, endDate, merchantId, token, agentParentList])
 
     useEffect(() => {
         fetchAgentList();
@@ -86,17 +84,24 @@ function AgentList() {
     }
     const closeAddAgentForm = () => {
         setIsAgentClick(false);
-        document.body.style.overflow = "auto";
+        setSelected('external')
     }
     const openFilteredForm = () => {
         setIsFilterClick(true);
     }
     const closeFilteredForm = () => {
         setIsFilterClick(false);
-        document.body.style.overflow = "auto";
     }
 
-    const filteredList = Array.isArray(agentList) ? agentList?.filter((list) => list?.merchant_agent_name?.toLowerCase().includes(searchText.toLowerCase())) : [];
+    const filteredList = Array.isArray(agentList) ? agentList?.filter((list) => {
+        // Filter by agentwithAccStatus
+        if (agentwithAccStatus === "ACTIVE" && list.status !== 'ACTIVE') return false;
+        if (agentwithAccStatus === "INACTIVE" && list.status !== 'INACTIVE') return false;
+        // Filter by searchText
+        return list?.merchant_agent_name?.toLowerCase().includes(searchText.toLowerCase());
+    })
+        : [];
+
     const totalPages = Math.ceil(filteredList?.length / rowsPerPage);
     const startIndex = (currentPage - 1) * rowsPerPage;
     const paginatedList = filteredList?.slice(startIndex, startIndex + rowsPerPage);
@@ -185,34 +190,63 @@ function AgentList() {
                 }
             }}
         >
+            {/* -------- External or Internal agents ---------- */}
+            <div className={style2.internal_external_button_container}>
+                <div className={style2.external_agent}>
+                    <input
+                        type="checkbox"
+                        checked={selected === 'external'}
+                        onChange={() => handleSelect('external')}
+                    />
+                    <button onClick={() => handleSelect('external')} >
+                        External Agents
+                    </button>
+                </div>
+
+                <div className={style2.external_agent}>
+                    <input
+                        type="checkbox"
+                        checked={selected === 'internal'}
+                        onChange={() => handleSelect('internal')}
+                    />
+                    <button onClick={() => handleSelect('internal')}>
+                        Internal Agents
+                    </button>
+                </div>
+
+            </div>
+
             <div className={style.merchants_parent_subheader}>
                 <div className={style.search_input_field}>
                     <input type='text' placeholder='Search by agent name...' maxLength={12} value={searchText}
                         onChange={(e) => { setSearchText(e.target.value); setCurrentPage(1) }} />
                     <IoSearch />
                 </div>
-                <div className={style2.start_date_and_end_date}>
-                    <div>
-                    <label>Filter by: </label>
-                        <DatePicker className={style2.date_input}
-                            placeholderText='Select start date'
-                            maxDate={new Date()}
-                            selected={startDate}
-                            onChange={(date) => {
-                                setStartDate(date?.toISOString()?.split("T")[0]);
-                            }}
-                        />
+                {/* ------- Date wise FIlter -------------- */}
+                {selected === 'external' &&
+                    <div className={style2.start_date_and_end_date}>
+                        <div>
+                            <label>Filter by: </label>
+                            <DatePicker className={style2.date_input}
+                                placeholderText='Select start date'
+                                maxDate={new Date()}
+                                selected={startDate}
+                                onChange={(date) => {
+                                    setStartDate(date?.toLocaleDateString()?.split("T")[0]);
+                                }}
+                            />
+                        </div>
+                        <div>
+                            <DatePicker className={style2.date_input}
+                                disabled={!startDate}
+                                minDate={startDate}
+                                maxDate={new Date()}
+                                selected={endDate}
+                                onChange={(date) => setEndDate(date?.toLocaleDateString()?.split("T")[0])}
+                                placeholderText='Select end date' />
+                        </div>
                     </div>
-                    <div>
-                        <DatePicker className={style2.date_input}
-                            disabled={!startDate}
-                            minDate={startDate}
-                            maxDate={new Date()}
-                            selected={endDate}
-                            onChange={(date) => setEndDate(date?.toISOString()?.split("T")[0])}
-                            placeholderText='Select end date' />
-                    </div>
-                </div>
+                }
                 <div style={{ display: "flex", gap: "16px", justifyContent: 'space-between' }}>
                     <div style={{ width: '100%' }}>
                         {/* <label style={{fontSize:'12px'}}>Filter By Status : </label> */}
@@ -238,69 +272,77 @@ function AgentList() {
                     <img src='/gold-coin.png' alt='Gold Coin' />
                 </div>
             </div> :
-                <>
-                    <table className={style.merchants_list_container} >
-                        <thead>
-                            <tr>
-                                <th>Agent Name</th>
-                                <th>Org./Brand Name</th>
-                                <th>Email</th>
-                                <th>Mobile</th>
-                                <th>Kyc Status</th>
-                                <th>Active/Inactive</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {paginatedList?.length > 0 ? (
-                                paginatedList?.map((val, id) => {
-                                    return <tr key={id}>
-                                        <td>{val?.sell_contact?.person_name}</td>
-                                        <td>{val?.merchant_agent_brand_name}</td>
-                                        <td>{val?.sell_contact?.person_email}</td>
-                                        <td>{val?.sell_contact?.person_mobile}</td>
-                                        <td>{val?.kyc_status ? "Approved" : "Pending"}</td>
-                                        <td>
-                                            <Switch checked={val.status.toLowerCase() === "active"}
-
-                                                onClick={() => {
-                                                    handleStatusChange(val.status, val.kyc_status, val.id)
-                                                }} />
-                                        </td>
-                                        <td><p style={{ cursor: "pointer" }}
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                setIsMenuClick(!isMenuClick);
-                                                setSelectedAgent(val);
-                                            }}
-                                        ><IoMdEye /></p>
-                                            {isMenuClick && selectedAgent?.id === val.id &&
-                                                <div className={style2.row_actions}>
-                                                    <ul className={style.user_menu_list}>
-                                                        <li onClick={() => {
-                                                            agentDetailsPage(selectedAgent?.id);
-                                                        }}>View & Verify</li>
-                                                        <li onClick={() => { setIsUpdateClick(true); }}>Update</li>
-                                                    </ul>
-                                                </div>
-                                            }
-                                        </td>
+                selected === 'internal' ? <InternalAgentList
+                    searchText={searchText}
+                    agentwithAccStatus={agentwithAccStatus}
+                /> :
+                    <>
+                        <div className={style.table_wrapper}>
+                            <table className={style.merchants_list_container} >
+                                <thead>
+                                    <tr>
+                                        <th>Agent Name</th>
+                                        <th>Org./Brand Name</th>
+                                        <th>Email</th>
+                                        <th>Mobile</th>
+                                        <th>Kyc Status</th>
+                                        <th>Created At</th>
+                                        <th>Active/Inactive</th>
+                                        <th>Action</th>
                                     </tr>
-                                })
-                            ) : <tr>
-                                <td colSpan="6" style={{ textAlign: "center" }}>No Data Found</td>
-                            </tr>
-                            }
-                        </tbody>
-                    </table>
-                    {agentList?.length > rowsPerPage &&
-                        <div className={style.pagination_parent}>
-                            <button onClick={handlePrev} disabled={currentPage === 1}>&lt;</button>
-                            <span className={style.pagination_parent_pageno}>{currentPage}</span>
-                            <button onClick={handleNext} disabled={currentPage === totalPages}>&gt;</button>
+                                </thead>
+                                <tbody>
+                                    {paginatedList?.length > 0 ? (
+                                        paginatedList?.map((val, id) => {
+                                            return <tr key={id}>
+                                                <td>{val?.sell_contact?.person_name}</td>
+                                                <td>{val?.merchant_agent_brand_name}</td>
+                                                <td>{val?.sell_contact?.person_email}</td>
+                                                <td>{val?.sell_contact?.person_mobile}</td>
+                                                <td>{val?.kyc_status ? "Approved" : "Pending"}</td>
+                                                <td>{dateFormat(val.created_at)}</td>
+                                                <td>
+                                                    <Switch checked={val.status.toLowerCase() === "active"}
+
+                                                        onClick={() => {
+                                                            handleStatusChange(val.status, val.kyc_status, val.id)
+                                                        }} />
+                                                </td>
+                                                <td><p style={{ cursor: "pointer" }}
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        setIsMenuClick(!isMenuClick);
+                                                        setSelectedAgent(val);
+                                                    }}
+                                                ><IoMdEye /></p>
+                                                    {isMenuClick && selectedAgent?.id === val.id &&
+                                                        <div className={style2.row_actions}>
+                                                            <ul className={style.user_menu_list}>
+                                                                <li onClick={() => {
+                                                                    agentDetailsPage(selectedAgent?.id);
+                                                                }}>View & Verify</li>
+                                                                <li onClick={() => { setIsUpdateClick(true); }}>Update</li>
+                                                            </ul>
+                                                        </div>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        })
+                                    ) : <tr>
+                                        <td colSpan="6" style={{ textAlign: "center" }}>No Data Found</td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
                         </div>
-                    }
-                </>
+                        {agentList?.length > rowsPerPage &&
+                            <div className={style.pagination_parent}>
+                                <button onClick={handlePrev} disabled={currentPage === 1}>&lt;</button>
+                                <span className={style.pagination_parent_pageno}>{currentPage}</span>
+                                <button onClick={handleNext} disabled={currentPage === totalPages}>&gt;</button>
+                            </div>
+                        }
+                    </>
             }
         </div>
         {isAddAgentClick && <AddAgent close={closeAddAgentForm}

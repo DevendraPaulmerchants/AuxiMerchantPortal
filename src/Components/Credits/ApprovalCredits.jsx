@@ -19,8 +19,8 @@ function CreditApproval() {
     const [isLoading, setIsLoading] = useState(true);
     const [searchText, setSearchText] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
-
     const rowsPerPage = 8;
+
     const getApprovalRequest = React.useCallback(() => {
         fetch(`${APIPath}credit-service/credit-request/approval/${merchantId}?startDate=${startDate ? startDate : ''}&endDate=${endDate ? endDate : ''}`, {
             headers: {
@@ -84,7 +84,7 @@ function CreditApproval() {
                 </div>
                 <div className={style2.start_date_and_end_date}>
                     <div>
-                        <p>Filter by date:</p>
+                        <p>Filter by :</p>
                     </div>
                     <div>
                         <DatePicker className={style2.date_input}
@@ -121,45 +121,47 @@ function CreditApproval() {
                 </div>
             ) : (
                 <>
-                    <table className={style.merchants_list_container}>
-                        <thead>
-                            <tr>
-                                <th>Requested By</th>
-                                {/* <th>Transaction Type</th> */}
-                                <th>Payment Method</th>
-                                <th>A/C no.</th>
-                                <th>Req. Credits</th>
-                                <th>Payment Status</th>
-                                <th>Approval Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {paginatedList?.length > 0 ? (
-                                paginatedList?.map((val, id) => (
-                                    <tr key={id} style={{ position: "relative" }}>
-                                        <td>{val.merchant_agent_name || val.sub_merchant_name || "Vikash basant"}</td>
-                                        {/* <td>{val.transaction_type || "0"}</td> */}
-                                        <td>{val.payment_method || "Cash"}</td>
-                                        <td>{`XXXX${val.acc_no?.slice(-4)}` || "1234"}</td>
-                                        <td>{val.amount || "0"}</td>
-                                        <td>{val.payment_status || "Pending"}</td>
-                                        <td>{val.approval_status || "Pending"}</td>
-                                        <td>
-                                            <p style={{ cursor: "pointer", fontSize: "24px" }}
-                                                onClick={() => { selectedCreditList(val.id); }}>
-                                                <GoEye />
-                                            </p>
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
+                    <div className={style.table_wrapper}>
+                        <table className={style.merchants_list_container}>
+                            <thead>
                                 <tr>
-                                    <td colSpan="7" style={{ textAlign: "center" }}>No Data Found</td>
+                                    <th>Requested By</th>
+                                    {/* <th>Transaction Type</th> */}
+                                    <th>Payment Method</th>
+                                    <th>A/C no.</th>
+                                    <th>Req. Credits</th>
+                                    <th>Payment Status</th>
+                                    <th>Approval Status</th>
+                                    <th>Action</th>
                                 </tr>
-                            )}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {paginatedList?.length > 0 ? (
+                                    paginatedList?.map((val, id) => (
+                                        <tr key={id} style={{ position: "relative" }}>
+                                            <td>{val.merchant_agent_name || val.sub_merchant_name || "Vikash basant"}</td>
+                                            {/* <td>{val.transaction_type || "0"}</td> */}
+                                            <td>{val.payment_method || "Cash"}</td>
+                                            <td>{`XXXX${val.acc_no?.slice(-4)}` || "1234"}</td>
+                                            <td>{val.amount || "0"}</td>
+                                            <td>{val.payment_status || "Pending"}</td>
+                                            <td>{val.approval_status || "Pending"}</td>
+                                            <td>
+                                                <p style={{ cursor: "pointer", fontSize: "24px" }}
+                                                    onClick={() => { selectedCreditList(val.id); }}>
+                                                    <GoEye />
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="7" style={{ textAlign: "center" }}>No Data Found</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                     {merchantPendingCreditList?.length > rowsPerPage &&
                         <div className={style.pagination_parent}>
                             <button onClick={handlePrev} disabled={currentPage === 1}>&lt;</button>

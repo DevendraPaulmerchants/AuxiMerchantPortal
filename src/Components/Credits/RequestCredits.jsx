@@ -18,7 +18,7 @@ function RequestCredits({ close, updateList }) {
     const [merchantPrimaryAccount, setMerchantPrimaryAccount] = useState(null);
 
     const getPrimaryAccount = () => {
-        const Url = paymentMethod === "UPI" ? `https://uat.magicalvacation.com/api/v1/admin/accounts/upi?is_primary=true` : `https://uat.magicalvacation.com/api/v1/admin/accounts/bank?is_primary=true`
+        const Url = paymentMethod === "UPI" ? `https://uat.magicalvacation.com/api/v1/admin/accounts/upis?is_primary=true` : `https://uat.magicalvacation.com/api/v1/admin/accounts/banks?is_primary=true`
         setIsLoading(true);
         fetch(Url, {
             headers: {

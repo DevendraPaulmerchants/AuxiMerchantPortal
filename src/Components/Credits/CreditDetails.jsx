@@ -5,6 +5,7 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useContextData } from '../Context/Context';
 import { APIPath } from '../ApIPath/APIPath';
+import { dateFormat } from '../../helper';
 
 function CreditDetails() {
     const { id } = useParams();
@@ -67,7 +68,7 @@ function CreditDetails() {
                                     <td>
                                         <h4 className={style.merchant_name}>Requested At:
                                             <span>
-                                                {creditDetails?.created_at?.split("T")[0]}
+                                                {dateFormat(creditDetails?.created_at)}
                                             </span>
                                         </h4>
                                     </td>

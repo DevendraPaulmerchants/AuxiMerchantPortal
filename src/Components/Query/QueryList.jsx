@@ -84,7 +84,7 @@ function QueryList() {
 
   const closeNewQueryForm = () => {
     setIsSendQueyClicked(false);
-     document.body.style.overflow = "auto"; 
+    document.body.style.overflow = "auto";
   }
   const navigate = useNavigate();
   const selectedSupportList = (Id) => {
@@ -121,41 +121,43 @@ function QueryList() {
         </div>
       ) : (
         <>
-          <table className={style.merchants_list_container}>
-            <thead>
-              <tr>
-                <th>Raised By</th>
-                <th>Category</th>
-                <th>Subject</th>
-                <th>Priority</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {paginatedList?.length > 0 ? (
-                paginatedList?.map((val, id) => (
-                  <tr key={id} style={{ position: "relative" }}>
-                    <td>{val.createdBy}</td>
-                    <td>{val.category}</td>
-                    <td style={{ maxWidth: "200px" }}>{val.subject}</td>
-                    <td>{val.priority}</td>
-                    <td>{val.status}</td>
-                    <td>
-                      <p style={{ fontSize: "24px", display: 'flex', gap: '20px', justifyContent: 'center' }}>
-                        <GoEye style={{cursor:"pointer"}} onClick={() => { selectedSupportList(val.id); }} />{" "}
-                        <MdDelete style={{cursor:"pointer"}} onClick={() => deleteQuery(val.id)} />
-                      </p>
-                    </td>
-                  </tr>
-                ))
-              ) : (
+          <div className={style.table_wrapper}>
+            <table className={style.merchants_list_container}>
+              <thead>
                 <tr>
-                  <td colSpan="7" style={{ textAlign: "center" }}>No Data Found</td>
+                  <th>Raised By</th>
+                  <th>Category</th>
+                  <th>Subject</th>
+                  <th>Priority</th>
+                  <th>Status</th>
+                  <th>Action</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {paginatedList?.length > 0 ? (
+                  paginatedList?.map((val, id) => (
+                    <tr key={id} style={{ position: "relative" }}>
+                      <td>{val.createdBy}</td>
+                      <td>{val.category}</td>
+                      <td style={{ maxWidth: "200px" }}>{val.subject}</td>
+                      <td>{val.priority}</td>
+                      <td>{val.status}</td>
+                      <td>
+                        <p style={{ fontSize: "24px", display: 'flex', gap: '20px', justifyContent: 'center' }}>
+                          <GoEye style={{ cursor: "pointer" }} onClick={() => { selectedSupportList(val.id); }} />{" "}
+                          <MdDelete style={{ cursor: "pointer" }} onClick={() => deleteQuery(val.id)} />
+                        </p>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="7" style={{ textAlign: "center" }}>No Data Found</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
           {supportList?.length > rowsPerPage &&
             <div className={style.pagination_parent}>
               <button onClick={handlePrev} disabled={currentPage === 1}>&lt;</button>

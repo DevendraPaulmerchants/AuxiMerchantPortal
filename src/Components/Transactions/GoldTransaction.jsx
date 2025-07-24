@@ -6,16 +6,16 @@ import { IoEye, IoSearch } from "react-icons/io5";
 import MetalDetails from './MetalDetails';
 import { APIPath } from '../ApIPath/APIPath';
 import { useContextData } from '../Context/Context';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { FcCancel, FcFlashOn, FcOk } from 'react-icons/fc';
 
 function GoldTransaction() {
-  const { status } = useParams();
+  const { state } = useLocation();
   const { token, merchantId } = useContextData();
   const [searchText, setSearchText] = useState("");
-  const [transactionType, setTransactionType] = useState(status || "");
+  const [transactionType, setTransactionType] = useState(state || "");
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 8;
   const [isloading, setIsLoading] = useState(false);
@@ -27,7 +27,7 @@ function GoldTransaction() {
 
   useEffect(() => {
     setIsLoading(true)
-    fetch(`${APIPath}merchant-service/history/merchant-transaction-history/${merchantId}?metalType=GOLD&startDate=${startDate?startDate:''}&endDate=${endDate?endDate:''}`, {
+    fetch(`${APIPath}merchant-service/history/merchant-transaction-history/${merchantId}?metalType=GOLD&startDate=${startDate ? startDate : ''}&endDate=${endDate ? endDate : ''}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'Application/json'
@@ -37,31 +37,22 @@ function GoldTransaction() {
     }).then((res) => res.json())
       .then((data) => {
         console.log(data);
-        if (transactionType === "SELL") {
-          const sell = data.data.filter((data) => data.order_type === "SELL")
-          setGoldLIst(sell);
-        }
-        else if (transactionType === "BUY") {
-          const buy = data.data.filter(item => item.order_type === "BUY");
-          setGoldLIst(buy);
-        }
-        else if (transactionType === "TRANSFER") {
-          const transfer = data.data.filter(item => item.order_type === "TRANSFER");
-          setGoldLIst(transfer);
-        }
-        else if (transactionType === "CONVERSION") {
-          const conversion = data.data.filter(item => item.order_type === "CONVERSION");
-          setGoldLIst(conversion);
-        }
-        else {
-          setGoldLIst(data.data);
-        }
+        setGoldLIst(data.data);
+
       }).catch((err) => {
         console.error(err)
       }).finally(() => setIsLoading(false))
-  }, [transactionType, merchantId, token,startDate,endDate])
+  }, [ merchantId, token, startDate, endDate])
 
-  const filteredList = goldList?.filter((list) => list.customer_name?.toLowerCase().includes(searchText.toLowerCase()));
+  const filteredList = goldList?.filter((list) => {
+    if (transactionType === 'SELL' && list.order_type !== 'SELL') return false;
+    if (transactionType === 'BUY' && list.order_type !== 'BUY') return false;
+    if (transactionType === 'TRANSFER' && list.order_type !== 'TRANSFER') return false;
+    if (transactionType === 'CONVERSION' && list.order_type !== 'CONVERSION') return false;
+    return list.customer_name?.toLowerCase().includes(searchText.toLowerCase())
+  });
+
+
   const totalPages = Math.ceil(filteredList?.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
   const paginatedList = filteredList?.slice(startIndex, startIndex + rowsPerPage);
@@ -81,51 +72,51 @@ function GoldTransaction() {
   }
   return <>
     <div className={style.merchants_parent}>
-      {isloading ? <div className={style.loader_container}><div className={style.loader_item}></div></div> :
-        <>
-          <div className={style.merchants_parent_subheader}>
-            <div className={style.search_input_field}>
-              <input type='text' placeholder='Search...' maxLength={12} value={searchText}
-                onChange={(e) => { setSearchText(e.target.value); setCurrentPage(1) }} />
-              <IoSearch />
-            </div>
-            <div className={style2.start_date_and_end_date}>
-              <div>
-                <p>Filter by date:</p>
-              </div>
-              <div>
-                <DatePicker className={style2.date_input}
-                  placeholderText='Select start date'
-                  maxDate={new Date()}
-                  selected={startDate}
-                  onChange={(date) => {
-                    setStartDate(date?.toISOString()?.split("T")[0]);
-                  }}
-                />
-              </div>
-              <div>
-                <DatePicker className={style2.date_input}
-                  disabled={!startDate}
-                  minDate={startDate}
-                  maxDate={new Date()}
-                  selected={endDate}
-                  onChange={(date) => setEndDate(date?.toISOString()?.split("T")[0])}
-                  placeholderText='Select end date' />
-              </div>
-            </div>
-
-            <div className={style1.transaction_type_input}>
-              <label htmlFor="Transaction Type">Order Type: </label>
-              <select value={transactionType} onChange={(e) => setTransactionType(e.target.value)}>
-                <option value="" disabled>Select Transaction Type</option>
-                <option value="ALL">All</option>
-                <option value="BUY">Buy</option>
-                <option value="SELL">Sell</option>
-                <option value="TRANSFER">Transfer</option>
-                <option value="CONVERSION">Conversion</option>
-              </select>
-            </div>
+      <div className={style.merchants_parent_subheader}>
+        <div className={style.search_input_field}>
+          <input type='text' placeholder='Search...' maxLength={12} value={searchText}
+            onChange={(e) => { setSearchText(e.target.value); setCurrentPage(1) }} />
+          <IoSearch />
+        </div>
+        <div className={style2.start_date_and_end_date}>
+          <div>
+            <p>Filter by :</p>
           </div>
+          <div>
+            <DatePicker className={style2.date_input}
+              placeholderText='Select start date'
+              maxDate={new Date()}
+              selected={startDate}
+              onChange={(date) => {
+                setStartDate(date?.toLocaleDateString());
+              }}
+            />
+          </div>
+          <div>
+            <DatePicker className={style2.date_input}
+              disabled={!startDate}
+              minDate={startDate}
+              maxDate={new Date()}
+              selected={endDate}
+              onChange={(date) => setEndDate(date?.toLocaleDateString())}
+              placeholderText='Select end date' />
+          </div>
+        </div>
+
+        <div className={style1.transaction_type_input}>
+          <select value={transactionType} onChange={(e) => setTransactionType(e.target.value)}>
+            <option value="" disabled>Select Transaction Type</option>
+            <option value="ALL">All</option>
+            <option value="BUY">Buy</option>
+            <option value="SELL">Sell</option>
+            <option value="TRANSFER">Transfer</option>
+            <option value="CONVERSION">Conversion</option>
+          </select>
+        </div>
+      </div>
+      {isloading ? <div className={style.loader_container}><div className={style.loader_item}></div></div> :
+
+        <div className={style.table_wrapper}>
           <table className={style.merchants_list_container}>
             <thead>
               <tr>
@@ -161,17 +152,19 @@ function GoldTransaction() {
               }
             </tbody>
           </table>
-          {goldList?.length > rowsPerPage &&
-            <div className={style.pagination_parent}>
-              <button onClick={handlePrev} disabled={currentPage === 1}>&lt;</button>
-              <span className={style.pagination_parent_pageno}>{currentPage}</span>
-              <button onClick={handleNext} disabled={currentPage === totalPages}>&gt;</button>
-            </div>
-          }
-        </>}
-    </div>
+        </div>
+      }
+      {goldList?.length > rowsPerPage &&
+        <div className={style.pagination_parent}>
+          <button onClick={handlePrev} disabled={currentPage === 1}>&lt;</button>
+          <span className={style.pagination_parent_pageno}>{currentPage}</span>
+          <button onClick={handleNext} disabled={currentPage === totalPages}>&gt;</button>
+        </div>
+      }
+    </div >
 
-    {openMetalPage && <MetalDetails selectedMetal={selectedMetal} close={closeDetailsPage} />}
+    {openMetalPage && <MetalDetails selectedMetal={selectedMetal} close={closeDetailsPage} />
+    }
   </>
 }
 

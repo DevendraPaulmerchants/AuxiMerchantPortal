@@ -23,7 +23,6 @@ function LogIn({ handleLogIn }) {
         fetch(`${APIPath}oauth-service/auth/token`, {
             method: "POST",
             headers: {
-                // 'Authorization': ``,
                 'Content-Type': "application/json"
             },
             body: JSON.stringify(newUser),
@@ -57,6 +56,7 @@ function LogIn({ handleLogIn }) {
             <div className={style.login_container}>
                 <div>
                     <h2 className={style.welcome_massage_h2}>Welcome</h2>
+                    <p className={style.welcome_massage_p}>to the Auxivault Merchant portal</p>
                 </div>
                 <form onSubmit={(e) => { e.preventDefault(); handleLogInData(); }}>
                     <div className={style.label_and_input_field}>

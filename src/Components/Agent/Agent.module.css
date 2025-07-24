@@ -1,6 +1,53 @@
 .back_arrow {
     cursor: pointer;
+    background: none;
+    border: none;
+    outline: none;
+    font-size: 20px;
 }
+/*------------------ Internal External Button ------------- */
+.internal_external_button_container {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem 0;
+}
+.external_agent {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding-left: 10px;
+    border-radius: 5px;
+}
+.external_agent button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 2px 10px;
+    border-radius: 5px;
+}
+/* -------------- Pan loader  ----------------------- */
+.pan_loader {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: loading 1s linear infinite;
+}
+
+@keyframes loading {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 
 .agent_document_image {
     height: 400px;
@@ -47,18 +94,27 @@
     border-radius: 5px;
     padding: 5px;
 }
-
 .start_date_and_end_date {
     display: flex;
     gap: 20px;
 }
-
 .date_input {
     outline: none;
     border: 1px solid rgba(38, 38, 38, 0.3);
     padding: 5px;
     border-radius: 5px;
     width: 100%;
+}
+/* --------------- Pan number with icon ---------- */
+.panNumber_with_validation_icon {
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(38, 38, 38, 0.4);
+    border-radius: 5px;
+    padding-right: 5px;
+}
+.panNumber_with_validation_icon input {
+    border: none;
 }
 
 /* ---------------- File view ------------- */
@@ -125,7 +181,6 @@
     width: 100%;
     height: 100%;
 }
-
 .open_file {
     width: 100%;
     height: 100%;

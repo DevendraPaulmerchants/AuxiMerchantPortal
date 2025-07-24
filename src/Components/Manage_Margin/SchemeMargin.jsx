@@ -6,13 +6,15 @@ import style1 from "../Agent/Merchants.module.css";
 import { useContextData } from '../Context/Context';
 import { APIPath } from '../ApIPath/APIPath';
 import AddNewScheme from './AddNewScheme';
+import { useLocation } from 'react-router-dom';
 
 function SchemeMargin() {
     const { token,merchantId } = useContextData();
+    const {state }=useLocation();
     const [merchantMarginList, setmerchantMarginList] = useState(null);
     const [selectedmerchantMargin, setSelectedmerchantMargin] = useState(null);
     const [isNewmerchantMarginClick, setIsNewmerchantMarginClick] = useState(false);
-    const [searchText, setSearchText] = useState("");
+    const [searchText, setSearchText] = useState(state?.schemeName || "");
     const [isLoading, setIsLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const rowsPerPage = 8;
@@ -29,7 +31,6 @@ function SchemeMargin() {
         })
             .then((res) => res.json())
             .then((data) => {
-                console.log(data.data);
                 setmerchantMarginList(data.data);
             })
             .catch((err) => {
@@ -70,7 +71,7 @@ function SchemeMargin() {
                     <IoSearch />
                 </div>
                 <div>
-                    <p>Here is the complete breakdown of metal charges for each merchant</p>
+                    <p>Previously Added Schemes</p>
                 </div>
                 <div className={style.add_merchants_and_filter}>
                     <button className={style1.primary_login_btn}
@@ -84,6 +85,7 @@ function SchemeMargin() {
                 </div>
             </div> :
                 <>
+                <div className={style.table_wrapper}>
                     <table className={style.merchants_list_container}>
                         <thead>
                             <tr>
@@ -135,6 +137,7 @@ function SchemeMargin() {
                             }
                         </tbody>
                     </table>
+                </div>
                     {merchantMarginList?.length > rowsPerPage &&
                         <div className={style.pagination_parent}>
                             <button onClick={handlePrev} disabled={currentPage === 1}>&lt;</button>

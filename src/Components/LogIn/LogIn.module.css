@@ -11,7 +11,7 @@
     position: absolute;
     left: 50%;
     top: 50%;
-    width: 30%;
+    width: 300px;
     transform: translate(-50%,-50%);
     background: #FFF;
     box-shadow: 5px 5px 5px rgb(38, 38, 38, 0.5);
@@ -115,6 +115,11 @@
 .welcome_massage_h2 {
     text-align: center;
     color: #646464;
+}
+.welcome_massage_p {
+    text-align: center;
+    color: #646464;
+    margin-bottom: 10px;
 }
 .welcome_massage_h2:last-child {
     cursor: pointer;

@@ -5,28 +5,28 @@ import style2 from "../Agent/Agent.module.css";
 import { IoMdEye } from "react-icons/io";
 import { IoSearch } from "react-icons/io5";
 import Switch from '@mui/material/Switch';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { APIPath } from '../ApIPath/APIPath';
 import { useContextData } from '../Context/Context';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
 function CustomerList() {
-  const { status } = useParams();
-
+  const { state } = useLocation();
+  console.log(state);
   const { token, merchantId, getUserDetails } = useContextData();
   const [searchText, setSearchText] = useState("");
   const [customerList, setCustomerList] = useState(null);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('')
-  const [customerwithAccStatus, setCustomerWithAccStatus] = useState(status || '');
+  const [customerwithAccStatus, setCustomerWithAccStatus] = useState(state || '');
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 8;
 
   const getCustomerList = React.useCallback(() => {
-    fetch(`${APIPath}merchant-service/merchant/customers/${merchantId}?startDate=${startDate?startDate:''}&endDate=${endDate?endDate:''}`, {
+    fetch(`${APIPath}merchant-service/merchant/customers/${merchantId}?startDate=${startDate ? startDate : ''}&endDate=${endDate ? endDate : ''}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': "Application/json"
@@ -36,29 +36,27 @@ function CustomerList() {
     }).then((res) => res.json())
       .then((data) => {
         // console.log(data.data);
-        if (customerwithAccStatus === "ACTIVE") {
-          const active = data.data.filter((data) => data.account_status === "ACTIVE");
-          setCustomerList(active);
-        } else if (customerwithAccStatus === "INACTIVE") {
-          const inactive = data.data.filter(item => item.account_status === "INACTIVE");
-          setCustomerList(inactive);
-        } else {
-          setCustomerList(data.data);
-        }
+        setCustomerList(data.data);
         setIsLoading(false);
       }).catch((err) => {
         console.error(err);
         setIsLoading(false);
       });
-  }, [customerwithAccStatus, merchantId, token,startDate,endDate]);
+  }, [  merchantId, token, startDate, endDate]);
 
 
   useEffect(() => {
     getCustomerList();
   }, [getCustomerList])
 
-  const filteredList = customerList && customerList?.filter((list) => list?.full_name?.toLowerCase().includes(searchText.toLowerCase())
-    || list.email?.toLowerCase().includes(searchText.toLowerCase()));
+  const filteredList = customerList && customerList?.filter((list) => {
+    // Filter by customer Account Status ---------------------
+    if (customerwithAccStatus === 'ACTIVE' && list.account_status !== 'ACTIVE') return false;
+    if (customerwithAccStatus === 'INACTIVE' && list.account_status !== 'INACTIVE') return false;
+    //  Filter by Customer Name --------------------------------
+    return list?.full_name?.toLowerCase().includes(searchText.toLowerCase())
+      || list.email?.toLowerCase().includes(searchText.toLowerCase())
+  });
 
   const totalPages = Math.ceil(filteredList?.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
@@ -155,9 +153,9 @@ function CustomerList() {
           <IoSearch />
         </div>
         <div className={style2.start_date_and_end_date}>
-          <div>
+          {/* <div>
             <p>Filter by date:</p>
-          </div>
+          </div> */}
           <div>
             <DatePicker className={style2.date_input}
               placeholderText='Select start date'
@@ -179,7 +177,7 @@ function CustomerList() {
           </div>
         </div>
         <div>
-          <label>Filter By Status : </label>
+          {/* <label>Filter By Status : </label> */}
           <select className={style2.merchants_select} value={customerwithAccStatus}
             onChange={(e) => { setCustomerWithAccStatus(e.target.value) }}>
             <option value="" disabled>Select Status</option>
@@ -197,57 +195,59 @@ function CustomerList() {
         </div>
       </div> :
         <>
-          <table className={style.merchants_list_container}>
-            <thead>
-              <tr>
-                <th>Customer Name</th>
-                <th>Email</th>
-                <th>Mobile</th>
-                <th>KYC Status</th>
-                <th>Active/Inactive</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {paginatedList?.length > 0 ? (
-                paginatedList?.map((val, id) => {
-                  return <tr key={id}>
-                    <td>{val.full_name}</td>
-                    <td>{val.email}</td>
-                    <td>{val.phone}</td>
-                    <td>{val.kyc_status}</td>
-                    <td>
-                      <Switch checked={val.account_status.toLowerCase() === "active"}
-                        onChange={() => {
-                          handleStatusChange(val.account_status, val.kyc_status, val.id)
+          <div className={style.table_wrapper}>
+            <table className={style.merchants_list_container}>
+              <thead>
+                <tr>
+                  <th>Customer Name</th>
+                  <th>Email</th>
+                  <th>Mobile</th>
+                  <th>KYC Status</th>
+                  <th>Active/Inactive</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedList?.length > 0 ? (
+                  paginatedList?.map((val, id) => {
+                    return <tr key={id}>
+                      <td>{val.full_name}</td>
+                      <td>{val.email}</td>
+                      <td>{val.phone}</td>
+                      <td>{val.kyc_status}</td>
+                      <td>
+                        <Switch checked={val.account_status.toLowerCase() === "active"}
+                          onChange={() => {
+                            handleStatusChange(val.account_status, val.kyc_status, val.id)
+                          }}
+                        />
+                      </td>
+                      <td><p style={{ cursor: "pointer" }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setSelectedCustomer(val);
                         }}
-                      />
-                    </td>
-                    <td><p style={{ cursor: "pointer" }}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setSelectedCustomer(val);
-                      }}
-                    ><IoMdEye /></p>
-                      {val.id === selectedCustomer?.id &&
-                        <div className={style2.row_actions}>
-                          <ul className={style.user_menu_list}>
-                            <li onClick={() => {
-                              customerDetailsPage(selectedCustomer?.id);
-                            }}>View & Verify</li>
-                            {/* <li onClick={() => { setIsUpdateClick(true); }}>Update</li> */}
-                          </ul>
-                        </div>
-                      }
-                    </td>
-                  </tr>
-                })
-              ) : <tr>
-                <td colSpan="7" style={{ textAlign: "center" }}>No Data Found</td>
-              </tr>
-              }
-            </tbody>
-          </table>
+                      ><IoMdEye /></p>
+                        {val.id === selectedCustomer?.id &&
+                          <div className={style2.row_actions}>
+                            <ul className={style.user_menu_list}>
+                              <li onClick={() => {
+                                customerDetailsPage(selectedCustomer?.id);
+                              }}>View & Verify</li>
+                              {/* <li onClick={() => { setIsUpdateClick(true); }}>Update</li> */}
+                            </ul>
+                          </div>
+                        }
+                      </td>
+                    </tr>
+                  })
+                ) : <tr>
+                  <td colSpan="7" style={{ textAlign: "center" }}>No Data Found</td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
           {customerList?.length > rowsPerPage &&
             <div className={style.pagination_parent}>
               <button onClick={handlePrev} disabled={currentPage === 1}>&lt;</button>

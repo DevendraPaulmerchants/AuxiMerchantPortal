@@ -6,15 +6,14 @@
 .merchants_parent_subheader {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
     padding: 1rem 0;
     gap: 1rem;
-    /* width: 90%; */
 }
 
 .search_input_field {
     display: flex;
     align-items: center;
-    /* border: 1px solid #928407; */
     border:1px solid rgba(38, 38, 38, 0.3);
     width: fit-content;
     height: fit-content;
@@ -44,9 +43,16 @@
     text-align: center;
     border-spacing: 0;
     width: 100%;
+    table-layout: auto;
+    white-space: nowrap;
+    border-radius: 10px;
+    overflow: hidden;
     box-shadow: 5px 5px 5px rgba(38, 38, 38, 0.5);
 }
-
+.table_wrapper {
+    width: calc(100% - 2px);
+    overflow-x: scroll;
+}
 .merchants_list_container th {
     background: rgba(38, 38, 38, 0.5);
     padding: 5px;

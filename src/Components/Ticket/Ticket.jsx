@@ -9,12 +9,13 @@ import { useContextData } from '../Context/Context';
 import { APIPath } from '../ApIPath/APIPath';
 
 function TicketList() {
-  const { token,merchantId } = useContextData();
+  const { token, merchantId } = useContextData();
   const [supportList, setSupportList] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 8;
+
   // Get all Tickets list ----------------- 
   const getSupportRequest = () => {
     setIsLoading(true);
@@ -39,7 +40,7 @@ function TicketList() {
   }
   useEffect(() => {
     getSupportRequest();
-    
+
   }, []);
 
   // const deleteQuery = (id) => {
@@ -111,41 +112,43 @@ function TicketList() {
         </div>
       ) : (
         <>
-          <table className={style.merchants_list_container}>
-            <thead>
-              <tr>
-                <th>Raised By</th>
-                <th>Category</th>
-                <th>Subject</th>
-                <th>Priority</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {paginatedList?.length > 0 ? (
-                paginatedList?.map((val, id) => (
-                  <tr key={id} style={{ position: "relative" }}>
-                    <td>{val.agent_name || "Jitendra Kumar"}</td>
-                    <td>{val.category}</td>
-                    <td style={{ maxWidth: "200px" }}>{val.subject}</td>
-                    <td>{val.priority}</td>
-                    <td>{val.status}</td>
-                    <td>
-                      <p style={{ fontSize: "24px", display: 'flex', gap: '20px', justifyContent: 'center' }}>
-                        <GoEye style={{cursor:"pointer"}}  onClick={() => { selectedSupportList(val.id); }} />{" "}
-                        {/* <MdDelete style={{cursor:"pointer"}}  onClick={() => deleteQuery(val.id)} /> */}
-                      </p>
-                    </td>
-                  </tr>
-                ))
-              ) : (
+          <div className={style.table_wrapper}>
+            <table className={style.merchants_list_container}>
+              <thead>
                 <tr>
-                  <td colSpan="7" style={{ textAlign: "center" }}>No Data Found</td>
+                  <th>Raised By</th>
+                  <th>Category</th>
+                  <th>Subject</th>
+                  <th>Priority</th>
+                  <th>Status</th>
+                  <th>Action</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {paginatedList?.length > 0 ? (
+                  paginatedList?.map((val, id) => (
+                    <tr key={id} style={{ position: "relative" }}>
+                      <td>{val.agent_name || "Jitendra Kumar"}</td>
+                      <td>{val.category}</td>
+                      <td style={{ maxWidth: "200px" }}>{val.subject}</td>
+                      <td>{val.priority}</td>
+                      <td>{val.status}</td>
+                      <td>
+                        <p style={{ fontSize: "24px", display: 'flex', gap: '20px', justifyContent: 'center' }}>
+                          <GoEye style={{ cursor: "pointer" }} onClick={() => { selectedSupportList(val.id); }} />{" "}
+                          {/* <MdDelete style={{cursor:"pointer"}}  onClick={() => deleteQuery(val.id)} /> */}
+                        </p>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="7" style={{ textAlign: "center" }}>No Data Found</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
           {supportList?.length > rowsPerPage &&
             <div className={style.pagination_parent}>
               <button onClick={handlePrev} disabled={currentPage === 1}>&lt;</button>

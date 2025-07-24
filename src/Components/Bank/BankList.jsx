@@ -8,7 +8,7 @@ import AddNewBank from './AddNewBank';
 import { APIPath } from '../ApIPath/APIPath';
 import { useContextData } from '../Context/Context';
 function BankList() {
-    const {token,merchantId}=useContextData();
+    const { token, merchantId } = useContextData();
     const [bankList, setBankList] = useState(null);
     const [selectedBank, setSelectedBank] = useState(null);
     const [isNewBankClick, setIsNewBankClick] = useState(false);
@@ -21,15 +21,14 @@ function BankList() {
         setIsLoading(true);
         fetch(`${APIPath}merchant-service/bank-accounts/merchant/${merchantId}`, {
             headers: {
-             "Authorization":`Bearer ${token}`,
-             "Content-Type":"Application/json"
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "Application/json"
             },
             method: "GET",
             mode: "cors"
         })
             .then((res) => res.json())
             .then((data) => {
-                console.log(data.data);
                 setBankList(data.data);
             })
             .catch((err) => {
@@ -58,13 +57,13 @@ function BankList() {
     const closeNewBankPage = () => {
         setIsNewBankClick(false);
         setSelectedBank(null);
-         document.body.style.overflow = "auto"; 
+        document.body.style.overflow = "auto";
     }
 
 
-    const handlePrimaryAccount = (Id,status) => {
-        const confirm=window.confirm("Are You sure to make this Account Primary ?");
-        if(!confirm){
+    const handlePrimaryAccount = (Id, status) => {
+        const confirm = window.confirm("Are You sure to make this Account Primary ?");
+        if (!confirm) {
             return;
         }
         setIsLoading(true);
@@ -72,7 +71,7 @@ function BankList() {
         const url = `${APIPath}merchant-service/bank-accounts/${Id}/primary`;
         fetch(url, {
             headers: {
-                "Authorization":`Bearer ${token}`,
+                "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
             method: 'PUT',
@@ -81,15 +80,13 @@ function BankList() {
         })
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
                 getBankLIst();
             })
             .catch((err) => {
-                console.log(err);
-            }).finally(()=>{
+                console.error(err);
+            }).finally(() => {
                 setIsLoading(false)
             })
-
     }
 
     return <>
@@ -101,7 +98,7 @@ function BankList() {
                     <IoSearch />
                 </div>
                 <div>
-                    <p>Below is the list of all previously added banks.</p>
+                    <p>Added banks</p>
                 </div>
                 <div className={style.add_merchants_and_filter}>
                     <button className={style1.primary_login_btn}
@@ -115,49 +112,51 @@ function BankList() {
                 </div>
             </div> :
                 <>
-                    <table className={style.merchants_list_container}>
-                        <thead>
-                            <tr>
-                                <th>Holder Name</th>
-                                {/* <th>Type</th> */}
-                                <th>Bank</th>
-                                <th>Branch</th>
-                                <th>A/c Number</th>
-                                <th>IFSC</th>
-                                <th>Primary</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {paginatedList?.length > 0 ? (
-                                paginatedList?.map((val, id) => {
-                                    return <tr key={id}>
-                                        <td>{val.account_holder_name}</td>
-                                        <td>{val.bank_name}</td>
-                                        <td>{val.branch_name}</td>
-                                        <td>{val.account_number}</td>
-                                        <td>{val.ifsc_code}</td>
-                                        <td>
-                                            <Switch checked={val?.primary}
-                                             onChange={(e)=>{
-                                                handlePrimaryAccount(val.id,val.primary)
-                                             }}
-                                            />
-                                        </td>
-                                        <td><p style={{ cursor: "pointer" }}
-                                            onClick={() => {
-                                                setSelectedBank(val);
-                                                setIsNewBankClick(true);
-                                            }}
-                                        ><MdEdit /></p></td>
-                                    </tr>
-                                })
-                            ) : <tr>
-                                <td colSpan="7" style={{ textAlign: "center" }}>No Data Found</td>
-                            </tr>
-                            }
-                        </tbody>
-                    </table>
+                    <div className={style.table_wrapper}>
+                        <table className={style.merchants_list_container}>
+                            <thead>
+                                <tr>
+                                    <th>Holder Name</th>
+                                    {/* <th>Type</th> */}
+                                    <th>Bank</th>
+                                    <th>Branch</th>
+                                    <th>A/c Number</th>
+                                    <th>IFSC</th>
+                                    <th>Primary</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {paginatedList?.length > 0 ? (
+                                    paginatedList?.map((val, id) => {
+                                        return <tr key={id}>
+                                            <td>{val.account_holder_name}</td>
+                                            <td>{val.bank_name}</td>
+                                            <td>{val.branch_name}</td>
+                                            <td>{val.account_number}</td>
+                                            <td>{val.ifsc_code}</td>
+                                            <td>
+                                                <Switch checked={val?.primary}
+                                                    onChange={(e) => {
+                                                        handlePrimaryAccount(val.id, val.primary)
+                                                    }}
+                                                />
+                                            </td>
+                                            <td><p style={{ cursor: "pointer" }}
+                                                onClick={() => {
+                                                    setSelectedBank(val);
+                                                    setIsNewBankClick(true);
+                                                }}
+                                            ><MdEdit /></p></td>
+                                        </tr>
+                                    })
+                                ) : <tr>
+                                    <td colSpan="7" style={{ textAlign: "center" }}>No Data Found</td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                     {bankList?.length > rowsPerPage &&
                         <div className={style.pagination_parent}>
                             <button onClick={handlePrev} disabled={currentPage === 1}>&lt;</button>
@@ -168,10 +167,10 @@ function BankList() {
                 </>
             }
         </div>
-        {isNewBankClick && <AddNewBank 
-        close={closeNewBankPage} 
-        selectedAccount={selectedBank}
-        updateList={getBankLIst}
+        {isNewBankClick && <AddNewBank
+            close={closeNewBankPage}
+            selectedAccount={selectedBank}
+            updateList={getBankLIst}
         />}
     </>
 }

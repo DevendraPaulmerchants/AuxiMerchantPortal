@@ -82,28 +82,31 @@ function Header({ open, handleOpen, handleLogOut }) {
     <div className={style.header_parent}>
       <div className={open ? style.header_logo_and_container : style.header_logo_and_close}>
         <Link to="/" className={style.logo_container}>
-          <img src='/AuxiGoldLogo1.png' alt='Company Logo' />
-          {/* <p>Auxi-Vaults Admin</p> */}
+        <div style={{
+          width:'100px',
+          height:'35px',
+          margin:'0 auto',
+          backgroundColor:'#1F342F',
+          padding:'5px 10px',
+          borderRadius:'5px'
+          }}>
+          <img src='/SIdebar_logo.png' loading='lazy' decoding='async' alt='Company Logo' style={{objectFit:'fill'}} />
+        </div>
         </Link>
         <h2 className={style.forward_and_backward_icon} onClick={handleOpen}>{open ? <span>&lt;</span> : <span>&gt;</span>}</h2>
       </div>
-      {/* <div className={style.slider}>
-        <p><button className={style.live_dot}></button>
-          <span className={style.live_text}>Live</span></p>
-      </div> */}
       <div className={style.slider_wrapper}>
         <div className={style.slider_container}>
           <p>Gold Rate: {rate?.gold_rate}/gm, Silver Rate: {rate?.silver_rate}/gm</p>
         </div>
       </div>
       <div className={style.header_notification_and_user_icon}>
-        {loading ? <div className={style.loader}></div> :
+        {/* {loading ? <div className={style.loader}></div> : */}
           <div className={style.wallet_container}>
-             {availableCredits > 0 ? <p className={style.wallet_value}>{availableCredits}</p> :
-              <p className={style.wallet_value}>0</p>}
+             {availableCredits > 0 && <p className={style.wallet_value}>{availableCredits || 0}</p>}
             <h2><IoIosWallet /></h2>
           </div>
-        }
+        {/* } */}
         <h2 onClick={() => setIsUserIconClick(true)}><FaUser /></h2>
       </div>
     </div>

@@ -10,7 +10,7 @@ import { APIPath } from "../ApIPath/APIPath";
 import AddUser from "./CreatePortalUser";
 
 const PortalUsers = () => {
-    const {token,merchantId} =useContextData()
+    const { token, merchantId } = useContextData()
     const [searchText, setSearchText] = useState("");
     const [userList, setuserList] = useState(null);
     const [selecteduser, setSelecteduser] = useState(null);
@@ -22,8 +22,8 @@ const PortalUsers = () => {
         setIsLoading(true);
         fetch(`${APIPath}oauth-service/auth/merchant/${merchantId}`, {
             headers: {
-              'Authorization':`Bearer ${token}`,
-              'Content-Type':'Application/json'
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'Application/json'
             },
             method: "GET",
             mode: "cors"
@@ -44,7 +44,7 @@ const PortalUsers = () => {
         getuserList();
     }, []);
 
-    const filteredList =Array.isArray(userList) ? userList?.filter((list) => list?.name?.toLowerCase().includes(searchText.toLowerCase())):[];
+    const filteredList = Array.isArray(userList) ? userList?.filter((list) => list?.name?.toLowerCase().includes(searchText.toLowerCase())) : [];
 
     const totalPages = Math.ceil(filteredList?.length / rowsPerPage);
     const startIndex = (currentPage - 1) * rowsPerPage;
@@ -60,7 +60,7 @@ const PortalUsers = () => {
     const closeNewuser = () => {
         setIsNewuserClick(false);
         setSelecteduser(null);
-        document.body.style.overflow = "auto"; 
+        document.body.style.overflow = "auto";
     }
 
     return <>
@@ -72,11 +72,11 @@ const PortalUsers = () => {
                     <IoSearch />
                 </div>
                 <div>
-                    <p>Below is the list of previously added portal users.</p>
+                    <p>Portal users</p>
                 </div>
                 <div className={style.add_merchants_and_filter}>
-                    <button className={style1.primary_login_btn} style={{padding:"0 40px"}}
-                    onClick={() => setIsNewuserClick(true)}
+                    <button className={style1.primary_login_btn} style={{ padding: "0 40px" }}
+                        onClick={() => setIsNewuserClick(true)}
                     >Add user</button>
                 </div>
             </div>
@@ -86,46 +86,48 @@ const PortalUsers = () => {
                 </div>
             </div> :
                 <>
-                    <table className={style.merchants_list_container}>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Role Name</th>
-                                <th>Dept. Name</th>
-                                <th>Active/Inactive</th>
-                                {/* <th>Last LogIn At</th> */}
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {paginatedList?.length > 0 ? (
-                                paginatedList?.map((val, id) => {
-                                    return <tr key={id}>
-                                        <td>{val?.name}</td>
-                                        <td>{val?.email}</td>
-                                        <td>{val?.phone}</td>
-                                        <td>{val?.roleName}</td>
-                                        <td>{val.departmentName}</td>
-                                        <td>
-                                        <Switch checked={val.status?.toLowerCase() === "active"}
-                                                onChange={() => {
-                                                    // handleStatusChange(val.status,val.kyc_status ,val.merchant_agent_users_id)
-                                                }} />
-                                        </td>
-                                        {/* <td>{val.last_login_at?.split("T")[0]}</td> */}
-                                        <td><p style={{ cursor: "pointer" }}
-                                            onClick={() => {setIsNewuserClick(true);setSelecteduser(val)}}
-                                        ><MdEdit /></p></td>
-                                    </tr>
-                                })
-                            ) : <tr>
-                                <td colSpan="7" style={{ textAlign: "center" }}>No Data Found</td>
-                            </tr>
-                            }
-                        </tbody>
-                    </table>
+                    <div className={style.table_wrapper}>
+                        <table className={style.merchants_list_container}>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Role Name</th>
+                                    <th>Dept. Name</th>
+                                    <th>Active/Inactive</th>
+                                    {/* <th>Last LogIn At</th> */}
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {paginatedList?.length > 0 ? (
+                                    paginatedList?.map((val, id) => {
+                                        return <tr key={id}>
+                                            <td>{val?.name}</td>
+                                            <td>{val?.email}</td>
+                                            <td>{val?.phone}</td>
+                                            <td>{val?.roleName}</td>
+                                            <td>{val.departmentName}</td>
+                                            <td>
+                                                <Switch checked={val.status?.toLowerCase() === "active"}
+                                                    onChange={() => {
+                                                        // handleStatusChange(val.status,val.kyc_status ,val.merchant_agent_users_id)
+                                                    }} />
+                                            </td>
+                                            {/* <td>{val.last_login_at?.split("T")[0]}</td> */}
+                                            <td><p style={{ cursor: "pointer" }}
+                                                onClick={() => { setIsNewuserClick(true); setSelecteduser(val) }}
+                                            ><MdEdit /></p></td>
+                                        </tr>
+                                    })
+                                ) : <tr>
+                                    <td colSpan="7" style={{ textAlign: "center" }}>No Data Found</td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                     {userList?.length > rowsPerPage &&
                         <div className={style.pagination_parent}>
                             <button onClick={handlePrev} disabled={currentPage === 1}>&lt;</button>
@@ -136,10 +138,10 @@ const PortalUsers = () => {
                 </>
             }
         </div>
-        {isNewuserClick && <AddUser 
-        close={closeNewuser} 
-        selecteduser={selecteduser}
-        updateList={getuserList} />}
+        {isNewuserClick && <AddUser
+            close={closeNewuser}
+            selecteduser={selecteduser}
+            updateList={getuserList} />}
     </>
 };
 

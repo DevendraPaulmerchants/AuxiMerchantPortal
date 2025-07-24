@@ -1,0 +1,53 @@
+.addInternalAgentContainer {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+}
+
+.internalAgent_txt {
+    width: 50%;
+}
+
+.internalAgent_txt p {
+    font-size: 14px;
+    color: rgba(38, 38, 38, 0.9);
+    font-weight: 500;
+}
+
+.addInternalAgent_files {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.addInternalAgent_files_format {
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.7);
+    background: rgba(38, 38, 38, 0.1);
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+}
+
+.addInternalAgent_files_format:hover {
+    background: rgba(38, 38, 38, 0.2);
+    transform: scale(1.2);
+    transition: all 0.3s ease-in-out;
+}
+
+.add_one_by_one {
+    margin-bottom: 1rem;
+}
+.two_btn_container {
+    display: flex;
+    gap: 2rem;
+    justify-content: space-between;
+}
+.add_one_by_one p {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: fit-content;
+}

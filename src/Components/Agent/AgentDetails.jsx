@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import style1 from "../Admin/Admin.module.css";
 import style from "./Merchants.module.css";
 import style2 from "./Agent.module.css";
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { APIPath } from '../ApIPath/APIPath';
 import { useContextData } from '../Context/Context';
@@ -10,7 +10,8 @@ import { memo } from 'react';
 import ApproveKYC from './ApproveKYC';
 import AddAgent from './AddAgent';
 import { CgMaximizeAlt } from 'react-icons/cg';
-import { FcClock,FcCancel,FcOk } from 'react-icons/fc';
+import { FcClock, FcCancel, FcOk } from 'react-icons/fc';
+import { dateAndTimeFormat } from '../../helper';
 
 
 function AgentDetails() {
@@ -21,7 +22,6 @@ function AgentDetails() {
     const [openReject, setOpenReject] = useState(false);
     const [docType, setDocType] = useState("");
     const [showImage, setShowImage] = useState(false);
-    // const [showImageUrl, setShowImageUrl] = useState("");
     const [isUpdateClicked, setIsUpdateClicked] = useState(false);
     const [selectedUrl, setSelectedUrl] = useState('');
     const [maxView, setMaxView] = useState(false);
@@ -53,6 +53,7 @@ function AgentDetails() {
     }, [fetchAgentDetails])
 
     const navigate = useNavigate();
+
     const approveAadhar = () => {
         if (selectedAgent?.aadhaar_verification === "VERIFIED") {
             alert("KYC has already been verified. No further action is required.");
@@ -141,123 +142,109 @@ function AgentDetails() {
                 <img src='/gold-coin.png' alt='Gold Coin' />
             </div></div> :
                 <>
-                    <table className={style.merchant_details_page_table}>
-                        <tbody>
-                            <tr className={style.merchant_details_page_row}>
-                                <td>
-                                    <h4 className={style.merchant_name}>Brand name:
-                                        <span>{selectedAgent?.merchant_agent_brand_name}</span>
-                                    </h4>
-                                </td>
-                                <td>
-                                    <h4 className={style.merchant_name}>Agent`s Name:
-                                        <span>
-                                            {selectedAgent?.sell_contact?.person_name}
-                                        </span>
-                                    </h4>
-                                </td>
-                                <td>
-                                    <h4 className={style.merchant_name}>Bussiness Type:
-                                        <span>
-                                            {selectedAgent?.business_type}
-                                        </span>
-                                    </h4>
-                                </td>
-                                <td>
-                                    <h4 className={style.merchant_name}>Scheme Name:
-                                        <span>{selectedAgent?.agent_scheme_dto?.scheme_name || ''}</span>
-                                    </h4>
-                                </td>
-                            </tr>
-                            <tr className={style.merchant_details_page_row}>
-                                <td>
-                                    <h4 className={style.merchant_name}>Agent`s Email:
-                                        <span>
-                                            {selectedAgent?.sell_contact?.person_email}
-                                        </span>
-                                    </h4>
-                                </td>
-                                <td>
-                                    <h4 className={style.merchant_name}>Agent`s Mobile No:
-                                        <span>
-                                            {selectedAgent?.sell_contact?.person_mobile}
-                                        </span>
-                                    </h4>
-                                </td>
-                                <td>
-                                    <h4 className={style.merchant_name}>Address:
-                                        <span>
-                                            {selectedAgent?.address?.address_street},{" "}
-                                            {selectedAgent?.address?.address_district},{" "}
-                                            {selectedAgent?.address?.address_state},{" "}
-                                            {selectedAgent?.address?.address_pincode}
-                                        </span>
-                                    </h4>
-                                </td>
-                            </tr>
-                            <tr className={style.merchant_details_page_row}>
-                                <td>
-                                    <h4 className={style.merchant_name}>Verification Status:
-                                        <span>
-                                            {selectedAgent?.verification_status}
-                                        </span>
-                                    </h4>
-                                </td>
-                                <td>
-                                    <h4 className={style.merchant_name}>KYC Status:
-                                        <span>
-                                            {(selectedAgent?.kyc_status) ? "Verified" : "Pending"}
-                                        </span>
-                                    </h4>
-                                </td>
-                                <td>
-                                    <h4 className={style.merchant_name}>Aadhar Number:
-                                        <span>
-                                            {selectedAgent?.aadhaar_no}
-                                        </span>
-                                    </h4>
-                                </td>
-                                <td>
-                                    <h4 className={style.merchant_name}>PAN Number:
-                                        <span>
-                                            {selectedAgent?.pan_no}
-                                        </span>
-                                    </h4>
-                                </td>
-                            </tr>
-                            <tr className={style.merchant_details_page_row}>
-                                <td>
-                                    {selectedAgent?.agreement_signed_date &&
-                                        <h4 className={style.merchant_name}>Agreement signed date:
-                                            <span>
-                                                {selectedAgent?.agreement_signed_date}
-                                            </span>
-                                        </h4>
-                                    }
-                                </td>
-                                <td>
-                                    {selectedAgent?.agreement_expiry_date &&
-                                        <h4 className={style.merchant_name}>Agreement expiry date:
-                                            <span>
-                                                {selectedAgent?.agreement_expiry_date}
-                                            </span>
-                                        </h4>
-                                    }
-                                </td>
-                                <td>
-                                    {selectedAgent?.created_at &&
-                                        <h4 className={style.merchant_name}>Created At:
-                                            <span>
-                                                {selectedAgent?.created_at?.split("T")[0]},
-                                                {" "} 
-                                                {selectedAgent?.created_at?.split("T")[1]?.split(".")[0]}
-                                            </span>
-                                        </h4>
-                                    }
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div className={style.customer_details_first_row}>
+                        <h4 className={style.merchant_name}>Brand name:
+                            <span>{selectedAgent?.merchant_agent_brand_name}</span>
+                        </h4>
+                        <h4 className={style.merchant_name}>Agent`s Name:
+                            <span>
+                                {selectedAgent?.sell_contact?.person_name}
+                            </span>
+                        </h4>
+                        <h4 className={style.merchant_name}>Bussiness Type:
+                            <span>
+                                {selectedAgent?.business_type}
+                            </span>
+                        </h4>
+                        <h4 className={style.merchant_name}>Scheme Name:
+                            <span>
+                                <Link to='/scheme_margin' state={{ schemeName: selectedAgent?.agent_scheme_dto?.scheme_name }}>
+                                    {selectedAgent?.agent_scheme_dto?.scheme_name || ''}
+                                </Link>
+                            </span>
+                        </h4>
+                    </div>
+
+                    <div className={style.customer_details_first_row}>
+                        <h4 className={style.merchant_name}>Agent`s Email:
+                            <span>
+                                {selectedAgent?.sell_contact?.person_email}
+                            </span>
+                        </h4>
+
+                        <h4 className={style.merchant_name}>Agent`s Mobile No:
+                            <span>
+                                {selectedAgent?.sell_contact?.person_mobile}
+                            </span>
+                        </h4>
+
+                        <h4 className={style.merchant_name}>Address:
+                            <span>
+                                {selectedAgent?.address?.address_street},{" "}
+                                {selectedAgent?.address?.address_district},{" "}
+                                {selectedAgent?.address?.address_state},{" "}
+                                {selectedAgent?.address?.address_pincode}
+                            </span>
+                        </h4>
+                    </div>
+                    <div className={style.customer_details_first_row}>
+                        <h4 className={style.merchant_name}>Verification Status:
+                            <span>
+                                {selectedAgent?.verification_status}
+                            </span>
+                        </h4>
+
+                        <h4 className={style.merchant_name}>KYC Status:
+                            <span>
+                                {(selectedAgent?.kyc_status) ? "Verified" : "Pending"}
+                            </span>
+                        </h4>
+
+                        <h4 className={style.merchant_name}>Aadhar Number:
+                            <span>
+                                {selectedAgent?.aadhaar_no}
+                            </span>
+                        </h4>
+
+                        <h4 className={style.merchant_name}>PAN Number:
+                            <span>
+                                {selectedAgent?.pan_no}
+                            </span>
+                        </h4>
+                    </div>
+                    <div className={style.customer_details_first_row}>
+                        {selectedAgent?.agreement_signed_date &&
+                            <h4 className={style.merchant_name}>Agreement signed date:
+                                <span>
+                                    {selectedAgent?.agreement_signed_date}
+                                </span>
+                            </h4>
+                        }
+
+                        {selectedAgent?.agreement_expiry_date &&
+                            <h4 className={style.merchant_name}>Agreement expiry date:
+                                <span>
+                                    {selectedAgent?.agreement_expiry_date}
+                                </span>
+                            </h4>
+                        }
+
+                        {selectedAgent?.created_at &&
+                            <h4 className={style.merchant_name}>Created At:
+                                <span>
+                                    {dateAndTimeFormat(selectedAgent?.created_at)}
+                                </span>
+                            </h4>
+                        }
+
+                        {selectedAgent?.updated_at &&
+                            <h4 className={style.merchant_name}>Updated At:
+                                <span>
+                                    {dateAndTimeFormat(selectedAgent?.updated_at)}
+                                </span>
+                            </h4>
+                        }
+                    </div>
                     <div className={style.agent_document}>
                         <div>
                             <p>Aadhar :</p>
@@ -282,7 +269,7 @@ function AgentDetails() {
                                     <p className={style.document_kyc_status}>
                                         {selectedAgent?.aadhaar_verification === "VERIFIED" && <FcOk title='Approved' />}
                                         {selectedAgent?.aadhaar_verification === "REJECTED" && <FcCancel title='Rejected' />}
-                                        {selectedAgent?.aadhaar_verification === "PENDING" && <FcClock title='Pending'/>}
+                                        {selectedAgent?.aadhaar_verification === "PENDING" && <FcClock title='Pending' />}
                                     </p>
                                 </div>
                             </div>
@@ -311,21 +298,22 @@ function AgentDetails() {
 
                                         {selectedAgent?.pan_verification === "VERIFIED" && "✅"}
                                         {selectedAgent?.pan_verification === "REJECTED" && "❌"}
-                                        {selectedAgent?.pan_verification === "PENDING" && <FcClock title='Pending'/>}
+                                        {selectedAgent?.pan_verification === "PENDING" && <FcClock title='Pending' />}
                                     </p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <br />
-                    <div>
+                    <div style={{ display: 'flex', gap: '4rem' }}>
                         <button className={style.primary_login_btn}
                             onClick={() => setIsUpdateClicked(true)}
                         >Update Details</button>
+                        <button className={style.primary_login_btn}>Verify Kyc</button>
                     </div>
                 </>
             }
-        </div>
+        </div >
         {maxView &&
             <div className={style2.preview_uploaded_file}>
                 <div className={style2.open_file_dimension}>
@@ -367,53 +355,13 @@ function AgentDetails() {
                 </div>
             </div>
         }
-        {/* {showImage && <div className={style.add_merchants_parent}>
-            <div className={style.add_merchants_form_container} style={{ height: "500px", width: "600px" }}>
-                <div className={style.add_merchants_header}>
-                    <h2 className={style2.back_arrow} onClick={() => {
-                        setShowImage(false);
-                    }}><IoMdArrowRoundBack /></h2>
-                </div>
-                <div className={style2.agent_document_image}>
-                    <iframe className={style1.open_file}
-                        src={showImageUrl}
-                        title="PDF Preview"
-                        width="100%"
-                        height="100%"
-                        frameBorder="0"
-                    />
-                </div>
-                {(selectedAgent?.aadhaar_verification === "PENDING" && showImageUrl === selectedAgent?.aadhaar_image_url) &&
-                    <div className={style.verify_btn}>
-                        <button className={style.primary_login_btn}
-                            onClick={() => approveAadhar()}
-                        >Approve</button>
-                        <button className={style.primary_login_btn}
-                            onClick={() => { setOpenReject(true); setDocType("AADHAAR") }}
-                            disabled={selectedAgent?.aadhaar_verification === "VERIFIED" ||
-                                selectedAgent?.aadhaar_verification === "REJECTED"}
-                        >Reject</button>
-                    </div>
-
-                }
-                {(selectedAgent?.pan_verification === "PENDING" && showImageUrl === selectedAgent?.pan_image_url) &&
-                    <div className={style.verify_btn}>
-                        <button className={style.primary_login_btn}
-                            onClick={() => approvePan()}
-                        >Approve</button>
-                        <button className={style.primary_login_btn}
-                            onClick={() => { setOpenReject(true); setDocType("PAN") }}
-                            disabled={selectedAgent?.pan_verification === "VERIFIED" ||
-                                selectedAgent?.pan_verification === "REJECTED"}
-                        >Reject</button>
-                    </div>
-                }
-            </div>
-        </div>} */}
+      
         {openReject && <ApproveKYC close={openRejectPage} agentId={selectedAgent?.id} docType={docType} />}
-        {isUpdateClicked && <AddAgent close={closeUpdateDetails}
-            selectedAgent={selectedAgent}
-            updateList={fetchAgentDetails} />}
+        {
+            isUpdateClicked && <AddAgent close={closeUpdateDetails}
+                selectedAgent={selectedAgent}
+                updateList={fetchAgentDetails} />
+        }
     </>
 }
 

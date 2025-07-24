@@ -7,6 +7,7 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import { APIPath } from '../ApIPath/APIPath';
 import { useContextData } from '../Context/Context';
 import ApprovalForm from './ApprovalForm';
+import { dateFormat } from '../../helper';
 // import ApprovalForm from './ApprovalForm';
 
 function ApprovalCreditDetails() {
@@ -121,7 +122,7 @@ function ApprovalCreditDetails() {
                                             <td>
                                                 <h4 className={style.merchant_name}>Requested At:
                                                     <span>
-                                                        {creditDetails?.created_at?.split("T")[0]}
+                                                        {dateFormat(creditDetails?.created_at)}
                                                     </span>
                                                 </h4>
                                             </td>
@@ -167,6 +168,7 @@ function ApprovalCreditDetails() {
                                             </td>
                                         </tr>
                                         <h3>Account details</h3>
+                                        <h4>Credited to :</h4>
                                         <tr>
                                             <td>
                                                 <h4 className={style.merchant_name}>A/c Holder Name:
@@ -199,8 +201,8 @@ function ApprovalCreditDetails() {
                                     <button className={style.primary_login_btn}
                                         disabled={creditDetails?.payment_status !== "SUCCESSFUL"}
                                         onClick={openApproveForm}
-                                    >Approve</button>
-                                    <button className={style.primary_login_btn}>Reject</button>
+                                    >Approve Request</button>
+                                    <button className={style.primary_login_btn}>Reject Request</button>
                                 </div>
                             </>
                         }

@@ -30,7 +30,6 @@ function AddNewScheme({ close, selectedAccount, updateList }) {
 
     const [isLoading, setIsLoading] = useState(false);
 
-    console.log(selectedAccount);
     // const id = metalType === "gold"
     //     ? selectedAccount?.goldMarginId
     //     : metalType === "silver"
@@ -79,14 +78,13 @@ function AddNewScheme({ close, selectedAccount, updateList }) {
         })
             .then((res) => res.json())
             .then((data) => {
-                console.log(data.data);
                 setIsLoading(false);
                 alert(data.message);
                 close();
                 updateList();
             })
             .catch((err) => {
-                console.log(err);
+                console.error(err);
                 setIsLoading(false);
             });
     }

@@ -93,7 +93,7 @@ function ChangePassword({ close,handleLogOut }) {
                             />
                             <span onClick={() => setShowPass(!showPass)}>{showPass ? <IoIosEye /> : <IoIosEyeOff />}</span>
                         </div>
-                        {!isvalidPass && <p className={style.invalid_password}>
+                        {!isvalidPass && password?.length > 0  && <p className={style.invalid_password}>
                             Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.
                         </p>}
                     </div>

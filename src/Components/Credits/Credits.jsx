@@ -30,7 +30,7 @@ function Credits() {
 
     const fetchCrditList = React.useCallback(() => {
         setIsLoading(true);
-        fetch(`${APIPath}credit-service/credit-request/${merchantId}?startDate=${startDate?startDate:''}&endDate=${endDate?endDate:''}`, {
+        fetch(`${APIPath}credit-service/credit-request/${merchantId}?startDate=${startDate ? startDate : ''}&endDate=${endDate ? endDate : ''}`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': "application/json"
@@ -83,7 +83,7 @@ function Credits() {
                 <div className={style.merchants_parent_subheader}>
                     <div className={style2.start_date_and_end_date}>
                         <div>
-                            <p>Filter by date:</p>
+                            <p>Filter by :</p>
                         </div>
                         <div>
                             <DatePicker className={style2.date_input}
@@ -91,7 +91,7 @@ function Credits() {
                                 maxDate={new Date()}
                                 selected={startDate}
                                 onChange={(date) => {
-                                    setStartDate(date?.toISOString()?.split("T")[0]);
+                                    setStartDate(date?.toLocaleDateString()?.split("T")[0]);
                                 }}
                             />
                         </div>
@@ -101,7 +101,7 @@ function Credits() {
                                 minDate={startDate}
                                 maxDate={new Date()}
                                 selected={endDate}
-                                onChange={(date) => setEndDate(date?.toISOString()?.split("T")[0])}
+                                onChange={(date) => setEndDate(date?.toLocaleDateString()?.split("T")[0])}
                                 placeholderText='Select end date' />
                         </div>
                     </div>
@@ -121,45 +121,47 @@ function Credits() {
                     </div>
                 ) : (
                     <>
-                        <table className={style.merchants_list_container}>
-                            <thead>
-                                <tr>
-                                    <th>Requested Credits</th>
-                                    <th>Requested Date</th>
-                                    <th>Transaction Type</th>
-                                    {/* <th>Payment Status</th> */}
-                                    <th>Approval Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {paginatedList?.length > 0 ? (
-                                    paginatedList?.map((val, id) => (
-                                        <tr key={id} style={{ position: "relative" }}>
-                                            <td>{val?.amount || "0"}</td>
-                                            <td>{val?.created_at?.split("T")[0] || ""}</td>
-                                            <td>{val?.transaction_type}</td>
-                                            {/* <td>{val?.payment_status || "Pending"}</td> */}
-                                            <td>{val?.approval_status}</td>
-                                            <td>
-                                                <p
-                                                    style={{ cursor: "pointer", fontSize: "24px" }}
-                                                    onClick={() => {
-                                                        openCreditDetailsPage(val.id);
-                                                    }}
-                                                >
-                                                    <GoEye />
-                                                </p>
-                                            </td>
-                                        </tr>
-                                    ))
-                                ) : (
+                        <div className={style.table_wrapper}>
+                            <table className={style.merchants_list_container}>
+                                <thead>
                                     <tr>
-                                        <td colSpan="6" style={{ textAlign: "center" }}>No Data Found</td>
+                                        <th>Requested Credits</th>
+                                        <th>Requested Date</th>
+                                        <th>Transaction Type</th>
+                                        {/* <th>Payment Status</th> */}
+                                        <th>Approval Status</th>
+                                        <th>Action</th>
                                     </tr>
-                                )}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {paginatedList?.length > 0 ? (
+                                        paginatedList?.map((val, id) => (
+                                            <tr key={id} style={{ position: "relative" }}>
+                                                <td>{val?.amount || "0"}</td>
+                                                <td>{val?.created_at?.split("T")[0] || ""}</td>
+                                                <td>{val?.transaction_type}</td>
+                                                {/* <td>{val?.payment_status || "Pending"}</td> */}
+                                                <td>{val?.approval_status}</td>
+                                                <td>
+                                                    <p
+                                                        style={{ cursor: "pointer", fontSize: "24px" }}
+                                                        onClick={() => {
+                                                            openCreditDetailsPage(val.id);
+                                                        }}
+                                                    >
+                                                        <GoEye />
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan="6" style={{ textAlign: "center" }}>No Data Found</td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
                         {creditList?.length > rowsPerPage &&
                             <div className={style.pagination_parent}>
                                 <button onClick={handlePrev} disabled={currentPage === 1}>&lt;</button>

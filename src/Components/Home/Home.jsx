@@ -41,17 +41,7 @@ function Home() {
                                 disabled={!startDate}
                                 onChange={(e) => setEndDate(e.target.value)} />
                         </div>
-                        {/* <select onChange={(e) => setSelectedMerchant(e.target.value)} className={styles.select}>
-                            <option value="" disabled>Select Agent</option>
-                            <option value="">All</option>
-                            {merchant?.map((merchant) => (
-                                <option key={merchant.id} value={merchant.id}>
-                                    {merchant.merchant_name}
-                                </option>
-                            ))}
-                        </select> */}
                     </div>
-                    <div className={style.cards_and_news}>
                         <div className={style.home_header_container}>
                             <div className={style.home_numberOfMerchants}>
                                 <h2><span>👥</span><span>Customer</span></h2>
@@ -60,7 +50,7 @@ function Home() {
                                         onClick={(e) => {
                                             const active = "all";
                                             e.preventDefault();
-                                            navigate(`/customer/status/${active}`)
+                                            navigate(`/customer`, { state: active })
                                         }}
                                     >
                                         <span>Total:</span>
@@ -70,7 +60,7 @@ function Home() {
                                         onClick={(e) => {
                                             const active = "ACTIVE";
                                             e.preventDefault();
-                                            navigate(`/customer/status/${active}`)
+                                            navigate(`/customer`, { state: active })
                                         }}>
                                         <span>Active:</span>
                                         <span>{user?.total_active_customers || 0}🟢</span>
@@ -79,7 +69,7 @@ function Home() {
                                         onClick={(e) => {
                                             const active = "INACTIVE";
                                             e.preventDefault();
-                                            navigate(`/customer/status/${active}`)
+                                            navigate(`/customer`, { state: active })
                                         }}
                                     >
                                         <span>InActive:</span>
@@ -96,7 +86,7 @@ function Home() {
                                         onClick={(e) => {
                                             const active = "all";
                                             e.preventDefault();
-                                            navigate(`/agent/status/${active}`)
+                                            navigate(`/agent`, { state: active })
                                         }}
                                     >
                                         <span>Total:</span>
@@ -106,7 +96,7 @@ function Home() {
                                         onClick={(e) => {
                                             const active = "ACTIVE";
                                             e.preventDefault();
-                                            navigate(`/agent/status/${active}`)
+                                            navigate(`/agent`, { state: active })
                                         }}
                                     >
                                         <span>Active:</span>
@@ -116,7 +106,7 @@ function Home() {
                                         onClick={(e) => {
                                             const active = "INACTIVE";
                                             e.preventDefault();
-                                            navigate(`/agent/status/${active}`)
+                                            navigate(`/agent`, { state: active })
                                         }}
                                     >
                                         <span>InActive:</span>
@@ -152,7 +142,6 @@ function Home() {
                             <div className={style.home_numberOfMerchants}>
                                 <h2><span>🧾</span><span>Queries</span></h2>
                                 <div className={style.agent_details_parent}
-                                // onClick={() => navigate('/view_ticket')}
                                 >
                                     <div className={style.agent_details}>
                                         <span>Total:</span>
@@ -191,7 +180,7 @@ function Home() {
                                                 <td><span>{user?.all_transaction_dto?.total_buy_trn_count || 0}</span></td>
                                                 <td><span>{user?.all_transaction_dto?.total_buy_trn_amount?.toFixed(2) || 0} 💸</span></td>
                                             </tr>
-                                            <tr>
+                                            <tr >
                                                 <td><span>Sell:</span></td>
                                                 <td><span>{user?.all_transaction_dto?.total_sell_trn_count || 0}</span></td>
                                                 <td><span>{user?.all_transaction_dto?.total_sell_trn_amount?.toFixed(2) || 0} 💸</span></td>
@@ -214,20 +203,13 @@ function Home() {
                                 <h2><span>🏅</span><span>Gold</span></h2>
                                 <div
                                     className={style.agent_details_parent}
-                                // onClick={() => navigate('/gold')}
                                 >
                                     <table>
                                         <tbody>
-                                            {/* <tr>
-                                                <td><span>Total:</span></td>
-                                                <td><span>{user?.gold_dashboard_dto?.buy_gold_in_grms || 0} g</span></td>
-                                                <td><span>{user?.gold_dashboard_dto?.buy_gold_in_tran?.toFixed(2) || 0} 🛒</span></td>
-                                            </tr> */}
                                             <tr
-                                                onClick={(e) => {
+                                                onClick={() => {
                                                     const active = "BUY";
-                                                    e.preventDefault();
-                                                    navigate(`/gold/${active}`)
+                                                    navigate(`/gold`, { state: active })
                                                 }}
                                             >
                                                 <td><span>Buy:</span></td>
@@ -235,22 +217,20 @@ function Home() {
                                                 <td><span>{user?.gold_dashboard_dto?.buy_gold_in_tran?.toFixed(2) || 0} 🛒</span></td>
                                             </tr>
                                             <tr
-                                            onClick={(e) => {
-                                                const active = "SELL";
-                                                e.preventDefault();
-                                                navigate(`/gold/${active}`)
-                                            }}
+                                                onClick={() => {
+                                                    const active = "SELL";
+                                                    navigate(`/gold`, { state: active })
+                                                }}
                                             >
                                                 <td><span>Sell:</span></td>
                                                 <td><span>{user?.gold_dashboard_dto?.sell_gold_in_grms || 0} g</span></td>
                                                 <td><span>{user?.gold_dashboard_dto?.sell_gold_in_tran?.toFixed(2) || 0} 💸</span></td>
                                             </tr>
                                             <tr
-                                            onClick={(e) => {
-                                                const active = "TRANSFER";
-                                                e.preventDefault();
-                                                navigate(`/gold/${active}`)
-                                            }}
+                                                onClick={() => {
+                                                    const active = "TRANSFER";
+                                                    navigate(`/gold`, { state: active })
+                                                }}
                                             >
                                                 <td><span>Transfer:</span></td>
                                                 <td><span>{user?.gold_dashboard_dto?.transfer_gold_in_grms || 0} g</span></td>
@@ -264,43 +244,34 @@ function Home() {
                                 <h2><span>🥈</span><span>Silver</span></h2>
                                 <div
                                     className={style.agent_details_parent}
-                                    // onClick={() => navigate('/silver')}
                                 >
                                     <table>
                                         <tbody>
-                                            {/* <tr>
-                                                <td><span>Total:</span></td>
-                                                <td><span>{user?.silver_dashboard_dto?.buy_silver_in_grms || 0} g</span></td>
-                                                <td><span>{user?.silver_dashboard_dto?.buy_silver_in_tran?.toFixed(2) || 0} 🛒</span></td>
-                                            </tr> */}
                                             <tr
-                                             onClick={(e) => {
-                                                const active = "BUY";
-                                                e.preventDefault();
-                                                navigate(`/silver/${active}`)
-                                            }}
+                                                onClick={() => {
+                                                    const active = "BUY";
+                                                    navigate(`/silver`, { state: active })
+                                                }}
                                             >
                                                 <td><span>Buy:</span></td>
                                                 <td><span>{user?.silver_dashboard_dto?.buy_silver_in_grms || 0} g</span></td>
                                                 <td><span>{user?.silver_dashboard_dto?.buy_silver_in_tran?.toFixed(2) || 0} 🛒</span></td>
                                             </tr>
                                             <tr
-                                             onClick={(e) => {
-                                                const active = "SELL";
-                                                e.preventDefault();
-                                                navigate(`/silver/${active}`)
-                                            }}
+                                                onClick={() => {
+                                                    const active = "SELL";
+                                                    navigate(`/silver`, { state: active })
+                                                }}
                                             >
                                                 <td><span>Sell:</span></td>
                                                 <td><span>{user?.silver_dashboard_dto?.sell_silver_in_grms || 0} g</span></td>
                                                 <td><span>{user?.silver_dashboard_dto?.sell_silver_in_tran?.toFixed(2) || 0} 💸</span></td>
                                             </tr>
                                             <tr
-                                             onClick={(e) => {
-                                                const active = "TRANSFER";
-                                                e.preventDefault();
-                                                navigate(`/silver/${active}`)
-                                            }}
+                                               onClick={() => {
+                                                    const active = "TRANSFER";
+                                                    navigate(`/silver`, { state: active })
+                                                }}
                                             >
                                                 <td><span>Transfer:</span></td>
                                                 <td><span>{user?.silver_dashboard_dto?.transfer_silver_in_grms || 0} g</span></td>
@@ -339,12 +310,6 @@ function Home() {
 
                             </div>
                         </div>
-                        {/* <div className={style.trends_and_news}>
-                                <DigitalGoldChart/>
-                                <br/>
-                               <PhysicalGoldChart/>
-                        </div> */}
-                    </div>
                 </>
             }
         </div>
