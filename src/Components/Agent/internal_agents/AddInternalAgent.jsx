@@ -81,81 +81,79 @@ function AddInternalAgent({ close }) {
     };
 
     return (
-        <>
-        <div>
-            {!isOneAgent &&
-                <div className={style.addInternalAgentContainer}>
-                    <div className={style.internalAgent_txt}>
-                        <p>
-                            Please download the Excel format provided, fill in the details exactly as per the given structure,
-                            and then upload the same file once completed. Do not modify the format or column headers.
-                        </p>
-                    </div>
-
-                    <div className={style.addInternalAgent_files}>
-                        <div
-                            className={style.addInternalAgent_files_format}
-                            onClick={handleDownload}
-                        >
-                            <FaFileDownload title="Download Format" fontSize={24} />
-                            <p>Download</p>
+            <div>
+                {!isOneAgent &&
+                    <div className={style.addInternalAgentContainer}>
+                        <div className={style.internalAgent_txt}>
+                            <p>
+                                Please download the Excel format provided, fill in the details exactly as per the given structure,
+                                and then upload the same file once completed. Do not modify the format or column headers.
+                            </p>
                         </div>
 
-                        <div
-                            className={style.addInternalAgent_files_format}
-                            onClick={handleUploadClick}
-                        >
-                            <FaFileUpload title="Upload Excel" fontSize={24} />
-                            <p>Upload</p>
-                            <input required
-                                type="file"
-                                accept=".xlsx"
-                                ref={fileInputRef}
-                                style={{ display: 'none' }}
-                                onChange={handleFileChange}
-                            />
+                        <div className={style.addInternalAgent_files}>
+                            <div
+                                className={style.addInternalAgent_files_format}
+                                onClick={handleDownload}
+                            >
+                                <FaFileDownload title="Download Format" fontSize={24} />
+                                <p>Download</p>
+                            </div>
+
+                            <div
+                                className={style.addInternalAgent_files_format}
+                                onClick={handleUploadClick}
+                            >
+                                <FaFileUpload title="Upload Excel" fontSize={24} />
+                                <p>Upload</p>
+                                <input required
+                                    type="file"
+                                    accept=".xlsx"
+                                    ref={fileInputRef}
+                                    style={{ display: 'none' }}
+                                    onChange={handleFileChange}
+                                />
+
+                            </div>
+                            {uploadError && (
+                                <p style={{ color: 'red', marginTop: '10px' }}>{uploadError}</p>
+                            )}
 
                         </div>
-                        {uploadError && (
-                            <p style={{ color: 'red', marginTop: '10px' }}>{uploadError}</p>
+
+                        {selectedFile && (
+                            <p style={{ color: 'green', marginTop: '10px' }}>
+                                Selected file: {selectedFile.name}
+                            </p>
                         )}
+                    </div>
+                }
+                <br />
+                <div className={style.add_one_by_one}>
+                    {!isOneAgent ? <p>Want to Add One(Single) Internal Agent</p> : <p>Want to upload file</p>}
+                    <div className={style.two_btn_container}>
+                        {!isOneAgent &&
+                            <p className={style1.primary_login_btn} onClick={() => setIsOneAgent(true)}><span><IoMdAdd /></span> <span>Add</span></p>
+                        }
+                        {isOneAgent &&
+                            <p className={style1.primary_login_btn} onClick={() => setIsOneAgent(false)}><span><IoMdAdd /></span> <span>Upload File</span></p>
+                        }
 
                     </div>
-
-                    {selectedFile && (
-                        <p style={{ color: 'green', marginTop: '10px' }}>
-                            Selected file: {selectedFile.name}
-                        </p>
-                    )}
+                    {isOneAgent && <InternalAgentForm close={close} />}
                 </div>
-            }
-            <br />
-            <div className={style.add_one_by_one}>
-                {!isOneAgent ? <p>Want to Add One(Single) Internal Agent</p>:<p>Want to upload file</p>}
-                <div className={style.two_btn_container}>
-                    {!isOneAgent &&
-                        <p className={style1.primary_login_btn} onClick={() => setIsOneAgent(true)}><span><IoMdAdd /></span> <span>Add</span></p>
-                    }
-                    {isOneAgent &&
-                        <p className={style1.primary_login_btn} onClick={() => setIsOneAgent(false)}><span><IoMdAdd /></span> <span>Upload File</span></p>
-                    }
-
-                </div>
+                {!isOneAgent &&
+                    <div>
+                        {loading ? <p>Loading...</p> :
+                            <button className={style1.primary_login_btn} disabled={!selectedFile || uploadError}
+                                type='submit' onClick={handleSubmit}
+                            >
+                                Submit
+                            </button>
+                        }
+                    </div>
+                }
             </div>
-            {!isOneAgent &&
-                <div>
-                    {loading ? <p>Loading...</p> :
-                        <button className={style1.primary_login_btn} disabled={!selectedFile || uploadError}
-                            type='submit' onClick={handleSubmit}
-                        >
-                            Submit
-                        </button>
-                    }
-                </div>
-            }
-            </div>
-            {isOneAgent && <InternalAgentForm close={close} />}
-        </>
     );
 }
 

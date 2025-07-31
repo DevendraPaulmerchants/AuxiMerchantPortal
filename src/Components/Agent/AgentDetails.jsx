@@ -133,53 +133,30 @@ function AgentDetails() {
     return <>
         <div className={style1.merchants_parent}>
             <div className={style.add_merchants_header}>
-                <h2 className={style2.back_arrow}
+                <button className='back_button'
                     onClick={() => {
                         navigate('/agent');
-                    }}><IoMdArrowRoundBack /></h2>
+                    }}><IoMdArrowRoundBack /></button>
             </div>
             {isloading ? <div className={style.loader_container}><div className={style.loader_item}>
                 <img src='/gold-coin.png' alt='Gold Coin' />
             </div></div> :
                 <>
-                    <div className={style.customer_details_first_row}>
-                        <h4 className={style.merchant_name}>Brand name:
-                            <span>{selectedAgent?.merchant_agent_brand_name}</span>
-                        </h4>
-                        <h4 className={style.merchant_name}>Agent`s Name:
-                            <span>
-                                {selectedAgent?.sell_contact?.person_name}
-                            </span>
-                        </h4>
-                        <h4 className={style.merchant_name}>Bussiness Type:
-                            <span>
-                                {selectedAgent?.business_type}
-                            </span>
-                        </h4>
-                        <h4 className={style.merchant_name}>Scheme Name:
-                            <span>
+                    <div className={style.first_row_details}>
+                        <h4 className={style.merchant_name}>Brand name:<span>{selectedAgent?.merchant_agent_brand_name}</span></h4>
+                        <h4 className={style.merchant_name}>Agent`s Name:<span>{selectedAgent?.sell_contact?.person_name}</span></h4>
+                        <h4 className={style.merchant_name}>Bussiness Type:<span>{selectedAgent?.business_type}</span></h4>
+                        <h4 className={style.merchant_name}>Scheme Name:<span>
                                 <Link to='/scheme_margin' state={{ schemeName: selectedAgent?.agent_scheme_dto?.scheme_name }}>
                                     {selectedAgent?.agent_scheme_dto?.scheme_name || ''}
                                 </Link>
                             </span>
                         </h4>
                     </div>
-
                     <div className={style.customer_details_first_row}>
-                        <h4 className={style.merchant_name}>Agent`s Email:
-                            <span>
-                                {selectedAgent?.sell_contact?.person_email}
-                            </span>
-                        </h4>
-
-                        <h4 className={style.merchant_name}>Agent`s Mobile No:
-                            <span>
-                                {selectedAgent?.sell_contact?.person_mobile}
-                            </span>
-                        </h4>
-
-                        <h4 className={style.merchant_name}>Address:
-                            <span>
+                        <h4 className={style.merchant_name}>Agent`s Email:<span>{selectedAgent?.sell_contact?.person_email}</span></h4>
+                        <h4 className={style.merchant_name}>Agent`s Mobile No:<span>{selectedAgent?.sell_contact?.person_mobile}</span></h4>
+                        <h4 className={style.merchant_name}>Address:<span>
                                 {selectedAgent?.address?.address_street},{" "}
                                 {selectedAgent?.address?.address_district},{" "}
                                 {selectedAgent?.address?.address_state},{" "}
@@ -188,29 +165,10 @@ function AgentDetails() {
                         </h4>
                     </div>
                     <div className={style.customer_details_first_row}>
-                        <h4 className={style.merchant_name}>Verification Status:
-                            <span>
-                                {selectedAgent?.verification_status}
-                            </span>
-                        </h4>
-
-                        <h4 className={style.merchant_name}>KYC Status:
-                            <span>
-                                {(selectedAgent?.kyc_status) ? "Verified" : "Pending"}
-                            </span>
-                        </h4>
-
-                        <h4 className={style.merchant_name}>Aadhar Number:
-                            <span>
-                                {selectedAgent?.aadhaar_no}
-                            </span>
-                        </h4>
-
-                        <h4 className={style.merchant_name}>PAN Number:
-                            <span>
-                                {selectedAgent?.pan_no}
-                            </span>
-                        </h4>
+                        <h4 className={style.merchant_name}>Verification Status:<span>{selectedAgent?.verification_status}</span></h4>
+                        <h4 className={style.merchant_name}>KYC Status:<span>{(selectedAgent?.kyc_status) ? "Verified" : "Pending"}</span></h4>
+                        <h4 className={style.merchant_name}>Aadhar Number:<span>{selectedAgent?.aadhaar_no}</span></h4>
+                        <h4 className={style.merchant_name}>PAN Number:<span>{selectedAgent?.pan_no}</span></h4>
                     </div>
                     <div className={style.customer_details_first_row}>
                         {selectedAgent?.agreement_signed_date &&

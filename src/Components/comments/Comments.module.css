@@ -1,0 +1,47 @@
+.comments_parent {
+    max-height: 400px;
+    overflow-y: scroll;
+}
+
+.MERCHANT {
+    margin: 10px;
+    width: 80%;
+}
+.AGENT {
+    justify-self: end;
+    max-width: 80%;
+    margin-right: 10px;
+    
+}
+
+.AGENT p:first-child {
+    font-size: 16px;
+    color: rgba(38, 38, 38, 0.9);
+    background: rgba(135, 206, 235, 0.4);
+    padding:5px 10px;
+    border-radius: 5px;
+}
+
+.AGENT p:last-child {
+    font-size: 12px;
+    color: rgba(38, 38, 38, 0.6);
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5px;
+}
+
+.MERCHANT p:first-child {
+    font-size: 16px;
+    color: rgba(38, 38, 38, 0.9);
+    background: rgba(38, 38, 38, 0.1);
+    padding:5px 10px;
+    border-radius: 5px;
+}
+
+.MERCHANT p:last-child {
+    font-size: 12px;
+    color: rgba(38, 38, 38, 0.6);
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5px;
+}

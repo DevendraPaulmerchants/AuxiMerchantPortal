@@ -4,10 +4,9 @@ import { useContextData } from '../../Context/Context';
 import { APIPath } from '../../ApIPath/APIPath';
 import { IoMdClose } from 'react-icons/io';
 
-const InternalAgentForm = ({ close, selectedRow }) => {
+const InternalAgentForm = ({ close, selectedRow,updateList }) => {
     const { token, merchantId } = useContextData();
     const [loading, setLoading] = useState(false);
-    console.log(selectedRow)
 
     const [agent, setAgent] = useState({
         merchant_id: merchantId,
@@ -45,7 +44,8 @@ const InternalAgentForm = ({ close, selectedRow }) => {
     const handleFormData = (e) => {
         e.preventDefault();
         console.log("Agent: ", agent);
-        console.log("Update Click")
+        console.log("Selected Row: ", selectedRow)
+        console.log(selectedRow ? "Update Click" : 'Submit Click')
         setLoading(true)
         const url = selectedRow ? `${APIPath}merchant-service/internal-agent/${selectedRow?.id}` : `${APIPath}merchant-service/internal-agent`
         fetch(url, {
@@ -57,16 +57,19 @@ const InternalAgentForm = ({ close, selectedRow }) => {
             body: JSON.stringify(agent),
             mode: 'cors'
         })
-            .then(async (res) => {
-                const data = await res.json();
-                console.log('Response:', res.status, data);
-                if (!res.ok) {
-                    alert(data.message || 'Failed to save agent');
+            .then((res) => res.json())
+            .then((data) => {
+                if(data.status_code === 201 || data.status_code === 200){
+                    alert(data.message || 'Agent saved successfully');
+                    close();
+                    updateList()
+                }
+                else {
+                    alert(data.message);
                     return;
                 }
-                alert(data.message || 'Agent saved successfully');
-                close();
             })
+
             .catch((err) => {
                 console.error('Network error:', err);
             })
@@ -74,12 +77,15 @@ const InternalAgentForm = ({ close, selectedRow }) => {
 
     }
 
-    return <div className={style.add_merchants_parent}>
-        <div className={style.add_merchants_form_container}>
-            <div className={style.add_merchants_header}>
-                <h2>{selectedRow ? "Update this Agent" : "Add new Agent"}</h2>
-                <h3 onClick={close}><IoMdClose /></h3>
-            </div>
+    return <div className={selectedRow ? style.add_merchants_parent : ''}>
+        <div className={selectedRow ? style.add_merchants_form_container : ''}>
+            {selectedRow &&
+                <div className={style.add_merchants_header}>
+                    <h2>{selectedRow ? "Update this Agent" : "Add new Agent"}</h2>
+                    <h3 onClick={close}><IoMdClose /></h3>
+                </div>
+            }
+
             <form onSubmit={handleFormData}>
                 <div className={style.name_email_parent_container}>
                     <div className={style.name_label_input_contaner}>
@@ -155,8 +161,11 @@ const InternalAgentForm = ({ close, selectedRow }) => {
                 </div>
                 <br />
                 <div>
-                    <button className={style.primary_login_btn}>{selectedRow ? 'Update' : 'Submit'}</button>
+                    {selectedRow ? <button className={style.primary_login_btn} onClick={handleFormData}>Update</button> :
+                        <button type="submit" className={style.primary_login_btn}>Submit</button>}
+
                 </div>
+
             </form>
         </div>
     </div>

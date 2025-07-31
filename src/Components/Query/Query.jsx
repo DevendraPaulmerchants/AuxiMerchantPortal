@@ -6,32 +6,56 @@ import { APIPath } from '../ApIPath/APIPath';
 
 function AddQuery({ close, updateList }) {
     document.body.style.overflow = "hidden";
-    const {token,merchantId} =useContextData();
+    const {token,merchantId,merchantName} =useContextData();
     const [category, setCategory] = useState("");
     const [priority, setPriority] = useState("");
     const [subject,setSubject]=useState("");
     const [description, setDescription] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedFiles, setSelectedFiles] = useState([]);
+
+    const handleFileChange = (event) => {
+        const files = event.target.files;
+        const fileArray = Array.from(files);
+        setSelectedFiles(fileArray);
+    };
 
     const newQuriesData = {
-        createdBy:"MERCHANT",
-        merchantId:merchantId,
-        priority:priority,
-        category: category,
-        subject:subject,
+        // createdBy:"MERCHANT",
+        // merchantId:merchantId,
+        // priority:priority,
+        // category: category,
+        // subject:subject,
+        // description: description,
+        ticketType: 'MERCHANT',
+        merchantName: merchantName,
+        merchantId: merchantId,
+        createdByUserId: merchantId,
+        createdByUserType: 'MERCHANT',
+        merchantEmail: 'dkrana5258@gmail.com', // Get from the Profile API
+        priority: priority,
+        issueType: category,
         description: description,
     }
     const sendQuery = (e) => {
         e.preventDefault();
         setIsLoading(true);
-        fetch(`${APIPath}customer-service/merchant-support-tickets`, {
+        const formData = new FormData();
+        formData.append('ticketData', JSON.stringify(newQuriesData));
+        // formData.append('attachments', selectedFiles);
+        selectedFiles.forEach((file) => {
+            formData.append('attachments', file);
+        });
+        // const url=`${APIPath}customer-service/merchant-support-tickets`
+        const url = 'http://103.171.97.105:8070/ticket-service/tickets'
+        fetch(url, {
             headers: {
                 "Authorization":`Bearer ${token} `,
-                "Content-Type": "application/json"
+                // "Content-Type": "application/json"
             },
             method: "POST",
             mode: "cors",
-            body: JSON.stringify(newQuriesData)
+            body: formData
         })
             .then((res) => res.json())
             .then((data) => {
@@ -78,17 +102,23 @@ function AddQuery({ close, updateList }) {
                             </select>
                         </div>
                     </div>
-                    <div className={style.name_email_parent_container}>
+                    {/* <div className={style.name_email_parent_container}>
                         <div className={style.name_label_input_contaner}>
                             <label>Subject:</label>
                             <input type='text' placeholder='enter subject..' required value={subject} maxLength={150}
                              onChange={(e) => setSubject(e.target.value)} />
                         </div>
-                    </div>
+                    </div> */}
                     <div className={style.name_email_parent_container}>
                         <div className={style.name_label_input_contaner}>
                             <label>Write Query:</label>
                             <textarea  placeholder='enter queries..' required value={description} onChange={(e) => setDescription(e.target.value)} />
+                        </div>
+                    </div>
+                    <div className={style.name_email_parent_container}>
+                        <div className={style.name_label_input_contaner}>
+                            <label>Attachments:</label>
+                            <input type='file' required multiple onChange={handleFileChange} />
                         </div>
                     </div>
                     {isLoading ? <div className={style.loader_container}><div className={style.loader_item}>

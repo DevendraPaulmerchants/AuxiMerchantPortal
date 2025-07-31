@@ -10,7 +10,7 @@ import { useContextData } from '../Context/Context';
 import { APIPath } from '../ApIPath/APIPath';
 
 function QueryList() {
-  const { token } = useContextData();
+  const { token,merchantId } = useContextData();
   const [supportList, setSupportList] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
@@ -20,7 +20,9 @@ function QueryList() {
   // Get Support list which are raised by itself------------------------ 
   const getSupportRequest = () => {
     setIsLoading(true);
-    fetch(`${APIPath}customer-service/merchant-support-tickets`, {
+    // const url=`${APIPath}customer-service/merchant-support-tickets`;
+    const url=`http://103.171.97.105:8070/ticket-service/tickets/merchant/${merchantId}?requestingUserType=MERCHANT&page=0&size=10&sortBy=createdAt&sortDir=desc`
+    fetch(url, {
       headers: {
         "Authorization": `Bearer ${token}`,
         "Content-Type": "Application/json"
@@ -68,7 +70,7 @@ function QueryList() {
         })
     }
   }
-  const filteredList = supportList?.filter((list) => list?.subject?.toLowerCase().includes(searchText.toLowerCase()));
+  const filteredList = supportList?.filter((list) => list?.issueType?.toLowerCase().includes(searchText.toLowerCase()));
 
   const totalPages = Math.ceil(filteredList?.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
@@ -127,7 +129,7 @@ function QueryList() {
                 <tr>
                   <th>Raised By</th>
                   <th>Category</th>
-                  <th>Subject</th>
+                  {/* <th>Subject</th> */}
                   <th>Priority</th>
                   <th>Status</th>
                   <th>Action</th>
@@ -136,16 +138,16 @@ function QueryList() {
               <tbody>
                 {paginatedList?.length > 0 ? (
                   paginatedList?.map((val, id) => (
-                    <tr key={id} style={{ position: "relative" }}>
-                      <td>{val.createdBy}</td>
-                      <td>{val.category}</td>
-                      <td style={{ maxWidth: "200px" }}>{val.subject}</td>
+                    <tr key={val.ticketId} style={{ position: "relative" }}>
+                      <td>{val.createdBy || 'User Name'}</td>
+                      <td>{val.issueType}</td>
+                      {/* <td style={{ maxWidth: "200px" }}>{val.subject}</td> */}
                       <td>{val.priority}</td>
                       <td>{val.status}</td>
                       <td>
                         <p style={{ fontSize: "24px", display: 'flex', gap: '20px', justifyContent: 'center' }}>
-                          <GoEye style={{ cursor: "pointer" }} onClick={() => { selectedSupportList(val.id); }} />{" "}
-                          <MdDelete style={{ cursor: "pointer" }} onClick={() => deleteQuery(val.id)} />
+                          <GoEye style={{ cursor: "pointer" }} onClick={() => { selectedSupportList(val.ticketId); }} />{" "}
+                          <MdDelete style={{ cursor: "pointer" }} onClick={() => deleteQuery(val.ticketId)} />
                         </p>
                       </td>
                     </tr>

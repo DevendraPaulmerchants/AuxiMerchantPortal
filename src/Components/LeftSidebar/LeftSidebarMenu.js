@@ -47,7 +47,7 @@ import { RiDashboardFill } from "react-icons/ri";
             path: "--",
             icon: <AiOutlineCustomerService />,
             subnavigation: [
-                { title: "Support", path: "/query", icon: <AiOutlineCustomerService title='Requested Query to Admin' /> },
+                { title: "Create Tickets", path: "/query", icon: <AiOutlineCustomerService title='Requested Query to Admin' /> },
                 { title: "View Ticket", path: "/view_ticket", icon: <AiOutlineFileSearch title='Requested Query from Agent' /> }
             ]
         },

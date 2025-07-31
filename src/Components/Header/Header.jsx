@@ -93,11 +93,11 @@ function Header({ open, handleOpen, handleLogOut }) {
           <img src='/SIdebar_logo.png' loading='lazy' decoding='async' alt='Company Logo' style={{objectFit:'fill'}} />
         </div>
         </Link>
-        <h2 className={style.forward_and_backward_icon} onClick={handleOpen}>{open ? <span>&lt;</span> : <span>&gt;</span>}</h2>
+        <button className='back_button' onClick={handleOpen}>{open ? <span>&lt;</span> : <span>&gt;</span>}</button>
       </div>
       <div className={style.slider_wrapper}>
         <div className={style.slider_container}>
-          <p>Gold Rate: {rate?.gold_rate}/gm, Silver Rate: {rate?.silver_rate}/gm</p>
+          <p>Gold Rate: <b>{rate?.gold_rate}</b>/gm, Silver Rate: <b>{rate?.silver_rate}</b>/gm</p>
         </div>
       </div>
       <div className={style.header_notification_and_user_icon}>

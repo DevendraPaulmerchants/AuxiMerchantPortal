@@ -19,7 +19,9 @@ function TicketList() {
   // Get all Tickets list ----------------- 
   const getSupportRequest = () => {
     setIsLoading(true);
-    fetch(`${APIPath}customer-service/agent-support-tickets/merchant/${merchantId}`, {
+    const url=`http://103.171.97.105:8070/ticket-service/tickets/merchant/${merchantId}?requestingUserType=MERCHANT&page=0&size=10&sortBy=createdAt&sortDir=desc`
+    // const url=`${APIPath}customer-service/agent-support-tickets/merchant/${merchantId}`
+    fetch(url, {
       headers: {
         "Authorization": `Bearer ${token}`,
         "Content-Type": "Application/json"
@@ -68,7 +70,7 @@ function TicketList() {
   //       })
   //   }
   // }
-  const filteredList = supportList?.filter((list) => list?.subject?.toLowerCase().includes(searchText.toLowerCase()));
+  const filteredList = supportList?.filter((list) => list?.issueType?.toLowerCase().includes(searchText.toLowerCase()));
 
   const totalPages = Math.ceil(filteredList?.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
@@ -118,7 +120,7 @@ function TicketList() {
                 <tr>
                   <th>Raised By</th>
                   <th>Category</th>
-                  <th>Subject</th>
+                  {/* <th>Description</th> */}
                   <th>Priority</th>
                   <th>Status</th>
                   <th>Action</th>
@@ -129,13 +131,13 @@ function TicketList() {
                   paginatedList?.map((val, id) => (
                     <tr key={id} style={{ position: "relative" }}>
                       <td>{val.agent_name || "Jitendra Kumar"}</td>
-                      <td>{val.category}</td>
-                      <td style={{ maxWidth: "200px" }}>{val.subject}</td>
+                      <td>{val.issueType}</td>
+                      {/* <td style={{ maxWidth: "200px" }}>{val.description}</td> */}
                       <td>{val.priority}</td>
                       <td>{val.status}</td>
                       <td>
                         <p style={{ fontSize: "24px", display: 'flex', gap: '20px', justifyContent: 'center' }}>
-                          <GoEye style={{ cursor: "pointer" }} onClick={() => { selectedSupportList(val.id); }} />{" "}
+                          <GoEye style={{ cursor: "pointer" }} onClick={() => { selectedSupportList(val.ticketId); }} />{" "}
                           {/* <MdDelete style={{cursor:"pointer"}}  onClick={() => deleteQuery(val.id)} /> */}
                         </p>
                       </td>

@@ -9,3 +9,10 @@
   gap: 2rem;
   height: 100vh;
 }
+.back_button {
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
+  font-size: 20px;
+}
