@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { APIPath } from "../ApIPath/APIPath";
 
 const Profile = () => {
-    const { token, merchantId } = useContextData();
+    const { token, merchantId,setMerchantEmail } = useContextData();
     const [profileData, setProfileData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -32,8 +32,11 @@ const Profile = () => {
                 const data = await response.json(); // Parse JSON data
                 console.log(data)
                 setProfileData(data.data);
+                setMerchantEmail(data.data?.merchant.primary_contact.person_email)
                 setLoading(false);
-            } catch (err) {
+            } 
+            catch (err) {
+                console.error(err)
                 setError("Failed to fetch profile data");
                 setLoading(false);
             }

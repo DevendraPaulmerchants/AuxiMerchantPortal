@@ -7,6 +7,7 @@ export const DataProvider = ({ children }) => {
     const [merchantId, setMerchantId] = useState(null);
     const [token, setToken] = useState(null);
     const [merchantName,setMerchantName] = useState(null);
+    const [merchantEmail,setMerchantEmail]=useState('')
     const [agentParentList, setAgentParentList] = useState(null);
     const [availableCredits, setAvailableCredits] = useState(0);
     // const [isLoading, setIsLoading] = useState(false);
@@ -76,8 +77,9 @@ export const DataProvider = ({ children }) => {
 
     const contextValue = useMemo(() => ({
         merchantId, setMerchantId,
-        isHomeLoading,
         token, setToken,
+        merchantEmail,setMerchantEmail,
+        isHomeLoading,
         availableCredits, setAvailableCredits,
         agentParentList, setAgentParentList,
         merchantName,setMerchantName,
@@ -86,6 +88,7 @@ export const DataProvider = ({ children }) => {
     }), [
         merchantId,
         token,
+        merchantEmail,
         isHomeLoading,
         availableCredits,
         agentParentList,

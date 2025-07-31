@@ -6,7 +6,7 @@ import { APIPath } from '../ApIPath/APIPath';
 
 function AddQuery({ close, updateList }) {
     document.body.style.overflow = "hidden";
-    const {token,merchantId,merchantName} =useContextData();
+    const {token,merchantId,merchantName,merchantEmail} =useContextData();
     const [category, setCategory] = useState("");
     const [priority, setPriority] = useState("");
     const [subject,setSubject]=useState("");
@@ -32,7 +32,7 @@ function AddQuery({ close, updateList }) {
         merchantId: merchantId,
         createdByUserId: merchantId,
         createdByUserType: 'MERCHANT',
-        merchantEmail: 'dkrana5258@gmail.com', // Get from the Profile API
+        merchantEmail: merchantEmail, // Get from the Profile API
         priority: priority,
         issueType: category,
         description: description,
