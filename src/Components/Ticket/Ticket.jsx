@@ -14,7 +14,7 @@ function TicketList() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 8;
+  const rowsPerPage = 10;
 
   // Get all Tickets list ----------------- 
   const getSupportRequest = () => {

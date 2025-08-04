@@ -14,9 +14,19 @@
      background: #FFF;
      height: 70%;
      width: 50%;
+     border-radius: 10px;
+}
+.document_conatainer button {
+    padding-left: 1rem;
+    padding-top: 1rem;
+}
+.iframe_conatainer {
+    height: 90%;
+    width: 100%;
 }
 .iframe_conatainer iframe {
     height: 100%;
     width: 100%;
     object-fit: fill;
+    border: none;
 }

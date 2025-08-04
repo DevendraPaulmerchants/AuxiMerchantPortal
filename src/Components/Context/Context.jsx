@@ -6,8 +6,9 @@ const Context = createContext();
 export const DataProvider = ({ children }) => {
     const [merchantId, setMerchantId] = useState(null);
     const [token, setToken] = useState(null);
-    const [merchantName,setMerchantName] = useState(null);
-    const [merchantEmail,setMerchantEmail]=useState('')
+    const [merchantName, setMerchantName] = useState(null);
+    const [merchantEmail, setMerchantEmail] = useState('');
+     const [profileData, setProfileData] = useState(null); 
     const [agentParentList, setAgentParentList] = useState(null);
     const [availableCredits, setAvailableCredits] = useState(0);
     // const [isLoading, setIsLoading] = useState(false);
@@ -33,12 +34,14 @@ export const DataProvider = ({ children }) => {
             localStorage.setItem("merchantId", merchantId);
             localStorage.setItem("merchantName", merchantName);
         }
-    }, [token, merchantId,merchantName]);
-    const getUserDetails = useCallback((startDate,endDate) => {
+    }, [token, merchantId, merchantName]);
+
+    // -------------- Count used at Dashboard ----------------
+    const getUserDetails = useCallback((startDate, endDate) => {
         if (!merchantId || !token) return;
-      
+
         const startdate = startDate || new Date().toISOString().split("T")[0];
-        const enddate= endDate || " ";
+        const enddate = endDate || " ";
         setIsHomeLoading(true);
         fetch(`${APIPath}merchant-service/count/${merchantId}?startDate=${startdate}&endDate=${enddate}`, {
             headers: {
@@ -50,7 +53,7 @@ export const DataProvider = ({ children }) => {
         })
             .then((res) => res.json())
             .then((data) => {
-                if(data?.status_code !== 200){
+                if (data?.status_code !== 200) {
                     localStorage.removeItem("token");
                     localStorage.removeItem("merchantId");
                     localStorage.removeItem("merchantName");
@@ -69,26 +72,51 @@ export const DataProvider = ({ children }) => {
             .finally(() => {
                 setIsHomeLoading(false);
             });
-    }, [merchantId, token,]);  
+    }, [merchantId, token,]);
+
+    // ----------------- Peofile that will use at the profile section --------------------
+
+    const getMerchantProfile = useCallback(() => {
+        if (!merchantId || !token) return;
+        fetch(`${APIPath}merchant-service/count/merchant-profile/${merchantId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            method: 'GET',
+            mode: 'cors'
+        }).then((res) => res.json())
+            .then((data) => {
+                console.log(data)
+                setProfileData(data.data);
+                setMerchantEmail(data.data?.merchant.primary_contact.person_email)
+            })
+            .catch((err) => {
+                console.error(err)
+            })
+    }, [merchantId,token])
 
     useEffect(() => {
         getUserDetails();
-    }, [getUserDetails]);
+        getMerchantProfile();
+    }, [getUserDetails, getMerchantProfile]);
 
     const contextValue = useMemo(() => ({
         merchantId, setMerchantId,
         token, setToken,
-        merchantEmail,setMerchantEmail,
+        merchantEmail, setMerchantEmail,
+        profileData, setProfileData,
         isHomeLoading,
         availableCredits, setAvailableCredits,
         agentParentList, setAgentParentList,
-        merchantName,setMerchantName,
+        merchantName, setMerchantName,
         user, setUser,
         getUserDetails,
     }), [
         merchantId,
         token,
         merchantEmail,
+        profileData,
         isHomeLoading,
         availableCredits,
         agentParentList,

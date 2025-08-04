@@ -131,13 +131,7 @@
     cursor: pointer;
 }
 
-/* .merchant_details_page_table {
-    width: 100%;
-}
 
-.merchant_details_page_row td {
-    padding-bottom: 1rem;
-} */
 .customer_details_first_row {
     display: flex;
     gap: 1rem 4rem;
@@ -147,7 +141,7 @@
 
 .merchant_name {
     font-weight: 500;
-    width: 200px;
+    width: 300px;
 }
 
 .merchant_name span {

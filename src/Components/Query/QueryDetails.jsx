@@ -5,6 +5,7 @@ import style1 from "../Admin/Admin.module.css"
 import { IoIosExpand, IoMdArrowRoundBack } from "react-icons/io";
 import { useContextData } from '../Context/Context';
 import { APIPath } from '../ApIPath/APIPath';
+import DocMaxView from '../docMaxView/DocMaxView';
 
 function QueryDetails() {
     const { id } = useParams();
@@ -42,7 +43,8 @@ function QueryDetails() {
         getqueryDetails()
     }, [id]);
 
-    return (
+
+    return <>
         <div className={style1.merchants_parent}>
             <div className={style.add_merchants_header}>
                 <button className='back_button' onClick={() => {
@@ -59,7 +61,7 @@ function QueryDetails() {
                         <h4 className={style.merchant_name}>Priority<span>{queryDetails?.priority}</span></h4>
                     </div>
                     <div className={style.first_row_details}>
-                        <h4 className={style.merchant_name}>Description:<span style={{ maxWidth: '200px' }}>{queryDetails?.description}</span></h4>
+                        <h4 className={style.merchant_name}>Description:<span>{queryDetails?.description}</span></h4>
                         <h4 className={style.merchant_name}>Created At:<span>{queryDetails?.createdAt?.split("T")[0]}</span></h4>
                     </div>
                     <div className={style.ticket_details_container}>
@@ -83,7 +85,8 @@ function QueryDetails() {
                 </>
             }
         </div >
-    )
+        {openFile !== null && <DocMaxView doc={openFile} close={()=>setOpenFile(null)} />}
+    </>
 }
 
 export default QueryDetails;

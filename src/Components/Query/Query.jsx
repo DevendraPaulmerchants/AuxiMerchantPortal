@@ -21,18 +21,12 @@ function AddQuery({ close, updateList }) {
     };
 
     const newQuriesData = {
-        // createdBy:"MERCHANT",
-        // merchantId:merchantId,
-        // priority:priority,
-        // category: category,
-        // subject:subject,
-        // description: description,
         ticketType: 'MERCHANT',
         merchantName: merchantName,
         merchantId: merchantId,
         createdByUserId: merchantId,
         createdByUserType: 'MERCHANT',
-        merchantEmail: merchantEmail, // Get from the Profile API
+        merchantEmail: merchantEmail, 
         priority: priority,
         issueType: category,
         description: description,

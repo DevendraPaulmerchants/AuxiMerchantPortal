@@ -188,7 +188,7 @@ function TicketDetails() {
                     <div className={style.add_merchats_btn_container}>
                         <button className={style.primary_login_btn}
                             onClick={() => setOpenComments(true)}
-                        >{(queryDetails?.status === 'CLOSED' || '') ? '✅ Closed' : 'Add Comment'}
+                        >{(queryDetails?.status === 'CLOSED' || '') ? '✅ Closed' : 'Reply'}
                         </button>
                         <button className={style.primary_login_btn}
                             onClick={(e) => {

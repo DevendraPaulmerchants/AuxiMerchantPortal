@@ -21,7 +21,7 @@ function QueryList() {
   const getSupportRequest = () => {
     setIsLoading(true);
     // const url=`${APIPath}customer-service/merchant-support-tickets`;
-    const url=`http://103.171.97.105:8070/ticket-service/tickets/merchant/${merchantId}?requestingUserType=MERCHANT&page=0&size=10&sortBy=createdAt&sortDir=desc`
+    const url=`http://103.171.97.105:8070/ticket-service/tickets/gettickectbymerchant/${merchantId}?requestingUserType=MERCHANT&page=0&size=10&sortBy=createdAt&sortDir=desc`
     fetch(url, {
       headers: {
         "Authorization": `Bearer ${token}`,
