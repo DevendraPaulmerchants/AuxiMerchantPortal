@@ -54,10 +54,10 @@ export const DataProvider = ({ children }) => {
             .then((res) => res.json())
             .then((data) => {
                 if (data?.status_code !== 200) {
+                    alert("Session expired, please log in again.");
                     localStorage.removeItem("token");
                     localStorage.removeItem("merchantId");
                     localStorage.removeItem("merchantName");
-                    alert("Session expired, please log in again.");
                     window.location.reload();
                     return;
                 }

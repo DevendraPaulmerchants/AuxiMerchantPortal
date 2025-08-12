@@ -31,6 +31,9 @@
 }
 
 .add_merchants_header {
+    position: sticky;
+    top: 0;
+    background: #fff;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -56,30 +59,25 @@
 }
 
 .name_label_input_contaner {
-    /* padding-right: 1rem; */
     width: 100%;
 }
 
 .name_label_input_contaner label {
     display: block;
-    /* color: rgba(255, 140, 0, 1); */
     color: rgba(38, 38, 38, 0.9);
     margin-bottom: 5px;
 }
 
 .name_label_input_contaner input {
-    /* border: 1px solid rgba(205, 133, 63, 1); */
     border: 1px solid rgba(38, 38, 38, 0.4);
     outline: none;
     border-radius: 5px;
     padding: 5px 5px 5px 10px;
     width: 95%;
-    /* color: #646464; */
     color: #1f1e19;
 }
 
 .name_label_input_contaner select {
-    /* border: 1px solid rgba(205, 133, 63, 1); */
     border: 1px solid rgba(38, 38, 38, 0.4);
     outline: none;
     border-radius: 5px;
@@ -90,7 +88,6 @@
 }
 
 .name_label_input_contaner textarea {
-    /* border: 1px solid rgba(205, 133, 63, 1); */
     border: 1px solid rgba(38, 38, 38, 0.4);
     outline: none;
     border-radius: 5px;
@@ -217,7 +214,6 @@
 .document_kyc_status {
     position: absolute;
     font-size: 20px;
-    /* border: 1px solid rgba(38, 38, 38, 0.5); */
     background: #fff;
     padding: 0 5px;
     border-radius: 2px;

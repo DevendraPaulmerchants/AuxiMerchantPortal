@@ -267,83 +267,128 @@ function AgentList() {
                     </div>
                 </div>
             </div>
-            {isLoading ? <div className={style1.loader_container}>
-                <div className={style1.loader_item}>
-                    <img src='/gold-coin.png' alt='Gold Coin' />
+            {isLoading ? (
+                <div className={style1.loader_container}>
+                    <div className={style1.loader_item}>
+                        <img src='/gold-coin.png' alt='Gold Coin' />
+                    </div>
                 </div>
-            </div> :
-                selected === 'internal' ? <InternalAgentList
-                    searchText={searchText}
-                    agentwithAccStatus={agentwithAccStatus}
-                /> :
-                    <>
-                        <div className={style.table_wrapper}>
-                            <table className={style.merchants_list_container} >
-                                <thead>
-                                    <tr>
-                                        <th>Agent Name</th>
-                                        <th>Org./Brand Name</th>
-                                        <th>Email</th>
-                                        <th>Mobile</th>
-                                        <th>Kyc Status</th>
-                                        <th>Created At</th>
-                                        <th>Active/Inactive</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {paginatedList?.length > 0 ? (
-                                        paginatedList?.map((val, id) => {
-                                            return <tr key={id}>
-                                                <td>{val?.sell_contact?.person_name}</td>
-                                                <td>{val?.merchant_agent_brand_name}</td>
-                                                <td>{val?.sell_contact?.person_email}</td>
-                                                <td>{val?.sell_contact?.person_mobile}</td>
-                                                <td>{val?.kyc_status ? "Approved" : "Pending"}</td>
-                                                <td>{dateFormat(val.created_at)}</td>
-                                                <td>
-                                                    <Switch checked={val.status.toLowerCase() === "active"}
-
-                                                        onClick={() => {
-                                                            handleStatusChange(val.status, val.kyc_status, val.id)
-                                                        }} />
-                                                </td>
-                                                <td><p style={{ cursor: "pointer" }}
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
-                                                        setIsMenuClick(!isMenuClick);
-                                                        setSelectedAgent(val);
-                                                    }}
-                                                ><IoMdEye /></p>
-                                                    {isMenuClick && selectedAgent?.id === val.id &&
-                                                        <div className={style2.row_actions}>
-                                                            <ul className={style.user_menu_list}>
-                                                                <li onClick={() => {
-                                                                    agentDetailsPage(selectedAgent?.id);
-                                                                }}>View & Verify</li>
-                                                                <li onClick={() => { setIsUpdateClick(true); }}>Update</li>
-                                                            </ul>
-                                                        </div>
-                                                    }
-                                                </td>
-                                            </tr>
-                                        })
-                                    ) : <tr>
-                                        <td colSpan="6" style={{ textAlign: "center" }}>No Data Found</td>
-                                    </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                        {agentList?.length > rowsPerPage &&
-                            <div className={style.pagination_parent}>
-                                <button onClick={handlePrev} disabled={currentPage === 1}>&lt;</button>
-                                <span className={style.pagination_parent_pageno}>{currentPage}</span>
-                                <button onClick={handleNext} disabled={currentPage === totalPages}>&gt;</button>
+            ) : (() => {
+                let content;
+                if (selected === 'internal') {
+                    content = (
+                        <InternalAgentList
+                            searchText={searchText}
+                            agentwithAccStatus={agentwithAccStatus}
+                        />
+                    );
+                } else {
+                    content = (
+                        <>
+                            <div className={style.table_wrapper}>
+                                <table className={style.merchants_list_container} >
+                                    <thead>
+                                        <tr>
+                                            <th>Agent Name</th>
+                                            <th>Org./Brand Name</th>
+                                            <th>Email</th>
+                                            <th>Mobile</th>
+                                            <th>Kyc Status</th>
+                                            <th>Created At</th>
+                                            <th>Active/Inactive</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {paginatedList?.length > 0 ? (
+                                            paginatedList?.map((val) => {
+                                                return <tr key={val.id}>
+                                                    <td>{val?.merchant_agent_name}</td>
+                                                    <td>{val?.merchant_agent_brand_name}</td>
+                                                    <td>{val?.sell_contact?.person_email}</td>
+                                                    <td>{val?.sell_contact?.person_mobile}</td>
+                                                    <td>{val?.kyc_status ? "Approved" : "Pending"}</td>
+                                                    <td>{dateFormat(val.created_at)}</td>
+                                                    <td>
+                                                        <Switch checked={val.status.toLowerCase() === "active"}
+                                                            onClick={() => {
+                                                                handleStatusChange(val.status, val.kyc_status, val.id)
+                                                            }} />
+                                                    </td>
+                                                    <td>
+                                                        <button
+                                                            style={{ cursor: "pointer", background: "none", border: "none", padding: 0 }}
+                                                            aria-label="View actions"
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                setIsMenuClick(!isMenuClick);
+                                                                setSelectedAgent(val);
+                                                            }}
+                                                            onKeyDown={(e) => {
+                                                                if (e.key === 'Enter' || e.key === ' ') {
+                                                                    setIsMenuClick(!isMenuClick);
+                                                                    setSelectedAgent(val);
+                                                                }
+                                                            }}
+                                                        >
+                                                            <IoMdEye />
+                                                        </button>
+                                                        {isMenuClick && selectedAgent?.id === val.id &&
+                                                            <div className={style2.row_actions}>
+                                                                <ul className={style.user_menu_list}>
+                                                                    <li>
+                                                                        <button
+                                                                            style={{ background: "none", border: "none", padding: 0, cursor: "pointer" }}
+                                                                            onClick={() => {
+                                                                                agentDetailsPage(selectedAgent?.id);
+                                                                            }}
+                                                                            onKeyDown={(e) => {
+                                                                                if (e.key === 'Enter' || e.key === ' ') {
+                                                                                    agentDetailsPage(selectedAgent?.id);
+                                                                                }
+                                                                            }}
+                                                                        >
+                                                                            View & Verify
+                                                                        </button>
+                                                                    </li>
+                                                                    <li>
+                                                                        <button
+                                                                            style={{ background: "none", border: "none", padding: 0, cursor: "pointer" }}
+                                                                            onClick={() => { setIsUpdateClick(true); }}
+                                                                            onKeyDown={(e) => {
+                                                                                if (e.key === 'Enter' || e.key === ' ') {
+                                                                                    setIsUpdateClick(true);
+                                                                                }
+                                                                            }}
+                                                                        >
+                                                                            Update
+                                                                        </button>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            })
+                                        ) : <tr>
+                                            <td colSpan="6" style={{ textAlign: "center" }}>No Data Found</td>
+                                        </tr>
+                                        }
+                                    </tbody>
+                                </table>
                             </div>
-                        }
-                    </>
-            }
+                            {agentList?.length > rowsPerPage &&
+                                <div className={style.pagination_parent}>
+                                    <button onClick={handlePrev} disabled={currentPage === 1}>&lt;</button>
+                                    <span className={style.pagination_parent_pageno}>{currentPage}</span>
+                                    <button onClick={handleNext} disabled={currentPage === totalPages}>&gt;</button>
+                                </div>
+                            }
+                        </>
+                    );
+                }
+                return content;
+            })()}
         </div>
         {isAddAgentClick && <AddAgent close={closeAddAgentForm}
             updateList={fetchAgentList}
